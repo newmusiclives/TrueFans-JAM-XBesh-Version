@@ -59,6 +59,7 @@ import {
 } from 'lucide-react'
 
 const TourPlannerPage = () => {
+  // All hooks must be at the top level - no conditional hooks
   const [currentStep, setCurrentStep] = useState(1)
   const [isDemo, setIsDemo] = useState(false)
   const [demoProcessing, setDemoProcessing] = useState(false)
@@ -104,6 +105,29 @@ const TourPlannerPage = () => {
     specialRequests: ''
   })
 
+  // Demo processing simulation - useEffect must be at top level
+  useEffect(() => {
+    if (demoProcessing && currentStep === 8) {
+      const interval = setInterval(() => {
+        setProcessingStep(prev => {
+          if (prev < processingSteps.length - 1) {
+            return prev + 1
+          } else {
+            clearInterval(interval)
+            setTimeout(() => {
+              setDemoProcessing(false)
+              setCurrentStep(9)
+            }, 1500)
+            return prev
+          }
+        })
+      }, 2000)
+
+      return () => clearInterval(interval)
+    }
+  }, [demoProcessing, currentStep])
+
+  // Constants and data - these can be after hooks
   const demoData = {
     startLocation: 'Nashville, TN',
     startDate: '2024-03-15',
@@ -189,28 +213,7 @@ nicole.concerts@email.com`,
     }
   ]
 
-  // Demo processing simulation
-  useEffect(() => {
-    if (demoProcessing && currentStep === 8) {
-      const interval = setInterval(() => {
-        setProcessingStep(prev => {
-          if (prev < processingSteps.length - 1) {
-            return prev + 1
-          } else {
-            clearInterval(interval)
-            setTimeout(() => {
-              setDemoProcessing(false)
-              setCurrentStep(9)
-            }, 1500)
-            return prev
-          }
-        })
-      }, 2000)
-
-      return () => clearInterval(interval)
-    }
-  }, [demoProcessing, currentStep])
-
+  // Functions
   const startDemo = () => {
     setIsDemo(true)
     setTourData(demoData)
@@ -300,41 +303,6 @@ nicole.concerts@email.com`,
 
   const calculateDonationRevenue = () => {
     return Math.round((tourData.expectedAttendance * tourData.donationRate / 100) * tourData.averageDonation)
-  }
-
-  const calculateTourProfitability = () => {
-    const totalShows = 16
-    const revenuePerShow = calculateDonationRevenue() + tourData.hostFee + tourData.merchandiseGoal
-    const totalRevenue = revenuePerShow * totalShows
-    
-    // Estimated costs
-    const gasPerMile = 0.15
-    const totalMiles = 2847
-    const gasCosts = totalMiles * gasPerMile
-    const hotelNights = 12 // estimated overnight shows
-    const avgHotelCost = 85
-    const hotelCosts = hotelNights * avgHotelCost
-    const foodPerDay = 45
-    const totalDays = 21
-    const foodCosts = foodPerDay * totalDays
-    const miscCosts = 300 // equipment, parking, etc.
-    
-    const totalCosts = gasCosts + hotelCosts + foodCosts + miscCosts
-    const netProfit = totalRevenue - totalCosts
-    const profitMargin = (netProfit / totalRevenue) * 100
-    
-    return {
-      totalRevenue,
-      totalCosts,
-      netProfit,
-      profitMargin,
-      breakdown: {
-        gas: gasCosts,
-        hotels: hotelCosts,
-        food: foodCosts,
-        misc: miscCosts
-      }
-    }
   }
 
   const renderStepContent = () => {

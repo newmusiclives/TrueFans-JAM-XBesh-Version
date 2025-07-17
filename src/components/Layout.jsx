@@ -14,7 +14,6 @@ const ScrollToTop = () => {
 
 const FooterLink = ({ to, children, className = "" }) => {
   const handleClick = () => {
-    // Small delay to ensure navigation happens first
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }, 100)
@@ -48,6 +47,7 @@ const Layout = ({ children, title, description }) => {
               <Link to="/how-it-works" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">How It Works</Link>
               <Link to="/success-stories" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">Stories</Link>
               <Link to="/about" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">About</Link>
+              <Link to="/admin" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">Admin</Link>
             </div>
             <div className="flex items-center space-x-4 flex-shrink-0">
               <button className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">Sign In</button>
@@ -120,6 +120,7 @@ const Layout = ({ children, title, description }) => {
                 <li><FooterLink to="/contact">Contact Us</FooterLink></li>
                 <li><FooterLink to="/privacy">Privacy Policy</FooterLink></li>
                 <li><FooterLink to="/terms">Terms of Service</FooterLink></li>
+                <li><FooterLink to="/admin">Admin Portal</FooterLink></li>
               </ul>
             </div>
           </div>

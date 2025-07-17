@@ -17,6 +17,7 @@ import HostCommunityPage from './pages/HostCommunityPage'
 import ArtistSignupPage from './pages/ArtistSignupPage'
 import TourPlannerPage from './pages/TourPlannerPage'
 import VettedHostsPage from './pages/VettedHostsPage'
+import AdminPortalPage from './pages/AdminPortalPage'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/artist-signup" element={<ArtistSignupPage />} />
         <Route path="/tour-planner" element={<TourPlannerPage />} />
         <Route path="/vetted-hosts" element={<VettedHostsPage />} />
+        <Route path="/admin" element={<AdminPortalPage />} />
       </Routes>
     </Router>
   )
