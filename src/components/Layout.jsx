@@ -40,7 +40,7 @@ const Layout = ({ children, title, description }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center flex-shrink-0">
-              <Music className="w-8 h-8 text-purple-600 mr-2 flex-shrink-0" />
+              <Music className="w-8 h-8 flex-shrink-0 mr-2" style={{ color: 'rgb(42,12,76)' }} />
               <span className="text-xl font-bold text-gray-900 whitespace-nowrap">TrueFans JAM</span>
             </Link>
             <div className="hidden md:flex space-x-8 flex-shrink-0">
@@ -51,7 +51,10 @@ const Layout = ({ children, title, description }) => {
             </div>
             <div className="flex items-center space-x-4 flex-shrink-0">
               <button className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">Sign In</button>
-              <button className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-colors whitespace-nowrap">
+              <button 
+                className="text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+                style={{ background: 'linear-gradient(to right, rgb(42,12,76), rgb(23,24,73))' }}
+              >
                 Join Now
               </button>
             </div>
@@ -60,12 +63,12 @@ const Layout = ({ children, title, description }) => {
       </nav>
 
       {/* Page Header */}
-      <div className="pt-16 bg-gradient-to-br from-purple-900 via-purple-800 to-pink-800 text-white">
+      <div className="pt-16 text-white" style={{ background: 'linear-gradient(to bottom right, rgb(42,12,76), rgb(23,24,73))' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">{title}</h1>
             {description && (
-              <p className="text-xl text-purple-200 max-w-3xl mx-auto">{description}</p>
+              <p className="text-xl text-white/80 max-w-3xl mx-auto">{description}</p>
             )}
           </div>
         </div>
@@ -77,26 +80,26 @@ const Layout = ({ children, title, description }) => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="text-white py-16" style={{ background: 'linear-gradient(to bottom right, rgb(42,12,76), rgb(23,24,73))' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <Music className="w-8 h-8 text-purple-400 mr-2" />
+                <Music className="w-8 h-8 text-orange-400 mr-2" />
                 <span className="text-xl font-bold">TrueFans JAM</span>
               </div>
-              <p className="text-gray-400 mb-4">
+              <p className="text-white/70 mb-4">
                 Connecting independent artists with their true fans through intimate, authentic musical experiences.
               </p>
               <div className="flex space-x-4">
-                <Globe className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer" />
-                <Mail className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer" />
-                <Phone className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer" />
+                <Globe className="w-5 h-5 text-white/70 hover:text-white cursor-pointer" />
+                <Mail className="w-5 h-5 text-white/70 hover:text-white cursor-pointer" />
+                <Phone className="w-5 h-5 text-white/70 hover:text-white cursor-pointer" />
               </div>
             </div>
             <div>
               <h4 className="font-bold mb-4">For Artists</h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-white/70">
                 <li><FooterLink to="/how-it-works">How It Works</FooterLink></li>
                 <li><FooterLink to="/success-stories">Success Stories</FooterLink></li>
                 <li><FooterLink to="/revenue-calculator">Revenue Calculator</FooterLink></li>
@@ -105,7 +108,7 @@ const Layout = ({ children, title, description }) => {
             </div>
             <div>
               <h4 className="font-bold mb-4">For Hosts</h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-white/70">
                 <li><FooterLink to="/become-host">Become a Host</FooterLink></li>
                 <li><FooterLink to="/vetted-hosts">Vetted Hosts Program</FooterLink></li>
                 <li><FooterLink to="/host-guidelines">Host Guidelines</FooterLink></li>
@@ -115,7 +118,7 @@ const Layout = ({ children, title, description }) => {
             </div>
             <div>
               <h4 className="font-bold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-white/70">
                 <li><FooterLink to="/help">Help Center</FooterLink></li>
                 <li><FooterLink to="/contact">Contact Us</FooterLink></li>
                 <li><FooterLink to="/privacy">Privacy Policy</FooterLink></li>
@@ -124,7 +127,7 @@ const Layout = ({ children, title, description }) => {
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+          <div className="border-t border-white/20 mt-12 pt-8 text-center text-white/70">
             <p>&copy; 2024 TrueFans JAM. All rights reserved. Built for independent artists, by music lovers.</p>
           </div>
         </div>

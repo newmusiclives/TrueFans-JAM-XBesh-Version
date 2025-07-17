@@ -101,6 +101,13 @@ const TourPlannerPage = () => {
     encorePreference: true,
     soundRequirements: 'basic-pa',
     
+    // Expense Configuration
+    gasPrice: 3.45, // average gas price per gallon
+    mpg: 25, // miles per gallon
+    hotelBudgetPerPerson: 85, // hotel budget per person per night
+    numberOfPeople: 1, // number of people touring
+    dailyFoodRate: 45, // daily food budget per person
+    
     // Additional
     specialRequests: ''
   })
@@ -165,6 +172,11 @@ nicole.concerts@email.com`,
     setLength: 90,
     encorePreference: true,
     soundRequirements: 'full-pa',
+    gasPrice: 3.45,
+    mpg: 25,
+    hotelBudgetPerPerson: 85,
+    numberOfPeople: 1,
+    dailyFoodRate: 45,
     specialRequests: 'Prefer venues with piano available. Need accessible parking for equipment.'
   }
 
@@ -247,6 +259,11 @@ nicole.concerts@email.com`,
       setLength: 90,
       encorePreference: true,
       soundRequirements: 'basic-pa',
+      gasPrice: 3.45,
+      mpg: 25,
+      hotelBudgetPerPerson: 85,
+      numberOfPeople: 1,
+      dailyFoodRate: 45,
       specialRequests: ''
     })
     setCurrentStep(1)
@@ -301,8 +318,50 @@ nicole.concerts@email.com`,
     return `${displayHour}:${minutes} ${ampm}`
   }
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', { 
+      weekday: 'long',
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    })
+  }
+
   const calculateDonationRevenue = () => {
     return Math.round((tourData.expectedAttendance * tourData.donationRate / 100) * tourData.averageDonation)
+  }
+
+  // Expense calculation functions
+  const calculateGasCost = (totalMiles) => {
+    const gallonsNeeded = totalMiles / tourData.mpg
+    return Math.ceil(gallonsNeeded * tourData.gasPrice)
+  }
+
+  const calculateHotelCost = (numberOfNights) => {
+    return Math.ceil(numberOfNights * tourData.hotelBudgetPerPerson * tourData.numberOfPeople)
+  }
+
+  const calculateFoodCost = (numberOfDays) => {
+    return Math.ceil(numberOfDays * tourData.dailyFoodRate * tourData.numberOfPeople)
+  }
+
+  const calculateMiscellaneousCost = (gasCost, hotelCost, foodCost) => {
+    return Math.ceil((gasCost + hotelCost + foodCost) * 0.20)
+  }
+
+  const generateTourDates = () => {
+    if (!tourData.startDate || !tourData.endDate) return []
+    
+    const start = new Date(tourData.startDate)
+    const end = new Date(tourData.endDate)
+    const dates = []
+    
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      dates.push(new Date(d))
+    }
+    
+    return dates
   }
 
   const renderStepContent = () => {
@@ -563,7 +622,7 @@ nicole.concerts@email.com`,
           <div className="space-y-6 min-h-[600px]">
             <div className="bg-blue-50 rounded-lg p-6 mb-6">
               <h3 className="text-lg font-bold text-blue-900 mb-2">Fan Base Outreach</h3>
-              <p className="text-blue-800">We'll email your fans to find potential hosts and gauge interest in each city.</p>
+              <p className="text-blue-800">We'll email your fans with your specific tour dates so they can indicate when they're available to host.</p>
             </div>
 
             <div>
@@ -601,16 +660,105 @@ nicole.concerts@email.com`,
 
             <div className="bg-green-50 rounded-lg p-6">
               <h4 className="font-bold text-green-900 mb-3">Email Campaign Preview</h4>
-              <div className="bg-white rounded-lg p-4 border border-green-200">
-                <div className="text-sm text-gray-600 mb-2">Subject: Help bring [Your Name] to your city!</div>
-                <div className="text-sm text-gray-800">
-                  Hi [Fan Name],<br/><br/>
-                  I'm planning a tour and would love to perform in your area! I'm looking for intimate venues like living rooms, 
-                  backyards, or small spaces where we can create a special musical experience together.<br/><br/>
-                  Would you be interested in hosting a house concert or know someone who might? 
-                  I'll handle all the details - you just provide the space and invite some friends!<br/><br/>
-                  Let me know if you're interested!<br/>
-                  [Your Name]
+              <div className="bg-white rounded-lg p-6 border border-green-200 shadow-sm">
+                <div className="text-sm text-gray-600 mb-4 pb-3 border-b border-gray-200">
+                  <strong>Subject:</strong> Help bring [Your Name] to your city - Tour dates inside!
+                </div>
+                
+                <div className="text-sm text-gray-800 space-y-4">
+                  <p>Hi [Fan Name],</p>
+                  
+                  <p>I'm excited to announce my upcoming tour and would love to perform in your area! I'm looking for intimate venues like living rooms, backyards, or small spaces where we can create a special musical experience together.</p>
+                  
+                  <div className="bg-blue-50 rounded-lg p-4 my-4">
+                    <h5 className="font-bold text-blue-900 mb-2">My Tour Dates:</h5>
+                    <div className="text-blue-800">
+                      <strong>Tour Period:</strong> {tourData.startDate ? formatDate(tourData.startDate) : 'March 15, 2024'} - {tourData.endDate ? formatDate(tourData.endDate) : 'April 5, 2024'}
+                    </div>
+                  </div>
+                  
+                  <p><strong>Could you host a house concert during this time?</strong></p>
+                  
+                  <div className="bg-gray-50 rounded-lg p-4 my-4">
+                    <h5 className="font-bold text-gray-900 mb-3">Select Your Available Dates:</h5>
+                    <p className="text-sm text-gray-600 mb-3">Check all dates you could potentially host a show:</p>
+                    
+                    <div className="grid grid-cols-7 gap-2 text-xs">
+                      {/* Calendar header */}
+                      <div className="font-bold text-center text-gray-700">Sun</div>
+                      <div className="font-bold text-center text-gray-700">Mon</div>
+                      <div className="font-bold text-center text-gray-700">Tue</div>
+                      <div className="font-bold text-center text-gray-700">Wed</div>
+                      <div className="font-bold text-center text-gray-700">Thu</div>
+                      <div className="font-bold text-center text-gray-700">Fri</div>
+                      <div className="font-bold text-center text-gray-700">Sat</div>
+                      
+                      {/* Sample calendar dates */}
+                      {[
+                        '', '', '', '', '', '1', '2',
+                        '3', '4', '5', '6', '7', '8', '9',
+                        '10', '11', '12', '13', '14', '15', '16',
+                        '17', '18', '19', '20', '21', '22', '23',
+                        '24', '25', '26', '27', '28', '29', '30',
+                        '31', '', '', '', '', '', ''
+                      ].map((date, index) => (
+                        <div key={index} className="h-8 flex items-center justify-center">
+                          {date && (
+                            <label className="flex items-center justify-center w-full h-full hover:bg-blue-100 rounded cursor-pointer">
+                              <input type="checkbox" className="sr-only" />
+                              <span className="text-center w-full">{date}</span>
+                            </label>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-4 space-y-2">
+                      <div className="flex items-center">
+                        <input type="checkbox" id="flexible" className="mr-2" />
+                        <label htmlFor="flexible" className="text-sm">I'm flexible with dates - contact me to discuss</label>
+                      </div>
+                      <div className="flex items-center">
+                        <input type="checkbox" id="referral" className="mr-2" />
+                        <label htmlFor="referral" className="text-sm">I can't host but know someone who might</label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-yellow-50 rounded-lg p-4 my-4">
+                    <h5 className="font-bold text-yellow-900 mb-2">What I Provide:</h5>
+                    <ul className="text-yellow-800 text-sm space-y-1">
+                      <li>• Professional sound equipment</li>
+                      <li>• Complete show setup and breakdown</li>
+                      <li>• Help promoting the event to your friends</li>
+                      <li>• An unforgettable musical experience!</li>
+                    </ul>
+                  </div>
+                  
+                  <div className="bg-purple-50 rounded-lg p-4 my-4">
+                    <h5 className="font-bold text-purple-900 mb-2">What You Need:</h5>
+                    <ul className="text-purple-800 text-sm space-y-1">
+                      <li>• Space for 20-40 people (living room, backyard, etc.)</li>
+                      <li>• Ability to invite friends and neighbors</li>
+                      <li>• Standard electrical outlets</li>
+                      <li>• Enthusiasm for live music!</li>
+                    </ul>
+                  </div>
+                  
+                  <p>Simply reply to this email with your selected dates or any questions. I'll handle all the details - you just provide the space and invite some friends!</p>
+                  
+                  <p>Can't wait to potentially perform for you and your community!</p>
+                  
+                  <p>Best,<br/>[Your Name]</p>
+                  
+                  <div className="mt-6 pt-4 border-t border-gray-200 text-xs text-gray-500">
+                    <p><strong>Quick Reply Options:</strong></p>
+                    <div className="mt-2 space-x-2">
+                      <button className="bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700">Yes, I can host!</button>
+                      <button className="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700">I know someone</button>
+                      <button className="bg-gray-600 text-white px-3 py-1 rounded text-xs hover:bg-gray-700">Not this time</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -636,6 +784,30 @@ nicole.concerts@email.com`,
                   {Math.round(tourData.fanEmails.split('\n').filter(email => email.trim()).length * tourData.expectedFanResponses / 100 * 0.3)}
                 </div>
                 <div className="text-sm text-gray-600">Potential hosts</div>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 rounded-lg p-6">
+              <h4 className="font-bold text-blue-900 mb-3">Date-Specific Outreach Benefits</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <h5 className="font-semibold text-blue-800 mb-2">For You</h5>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>• Get specific availability from fans</li>
+                    <li>• Reduce back-and-forth scheduling</li>
+                    <li>• Higher response rates with clear dates</li>
+                    <li>• Better route optimization with real availability</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 className="font-semibold text-blue-800 mb-2">For Fans</h5>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>• Easy calendar selection interface</li>
+                    <li>• Clear expectations and timeline</li>
+                    <li>• Option to refer other potential hosts</li>
+                    <li>• Quick response buttons for easy replies</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -808,7 +980,7 @@ nicole.concerts@email.com`,
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Host Fee per Show</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Host Guarantee (optional)</label>
                 <div className="relative">
                   <input
                     type="number"
@@ -854,8 +1026,8 @@ nicole.concerts@email.com`,
                 <div className="bg-white rounded-lg p-4 text-center">
                   <Home className="w-8 h-8 text-blue-600 mx-auto mb-2" />
                   <div className="text-2xl font-bold text-gray-900">${tourData.hostFee}</div>
-                  <div className="text-sm text-gray-600">Host Fee</div>
-                  <div className="text-xs text-gray-500 mt-1">Guaranteed payment</div>
+                  <div className="text-sm text-gray-600">Host Guarantee</div>
+                  <div className="text-xs text-gray-500 mt-1">Optional payment</div>
                 </div>
                 <div className="bg-white rounded-lg p-4 text-center">
                   <Star className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
@@ -1065,6 +1237,17 @@ nicole.concerts@email.com`,
         )
 
       case 9:
+        // Calculate expense values
+        const totalMiles = 2847
+        const numberOfNights = 12
+        const numberOfDays = 21
+        
+        const gasCost = calculateGasCost(totalMiles)
+        const hotelCost = calculateHotelCost(numberOfNights)
+        const foodCost = calculateFoodCost(numberOfDays)
+        const miscellaneousCost = calculateMiscellaneousCost(gasCost, hotelCost, foodCost)
+        const totalCosts = gasCost + hotelCost + foodCost + miscellaneousCost
+
         return (
           <div className="space-y-6 min-h-[600px]">
             <div className="bg-green-50 rounded-lg p-6 mb-6">
@@ -1136,11 +1319,84 @@ nicole.concerts@email.com`,
               </div>
             </div>
 
+            {/* Expense Configuration */}
+            <div className="bg-blue-50 rounded-lg p-6">
+              <h4 className="font-bold text-blue-900 mb-4 flex items-center">
+                <Settings className="w-5 h-5 text-blue-600 mr-2" />
+                Expense Configuration
+              </h4>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-blue-800 mb-2">Gas Price per Gallon</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={tourData.gasPrice}
+                      onChange={(e) => handleInputChange('gasPrice', parseFloat(e.target.value))}
+                      className="w-full px-3 py-2 pl-7 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                      disabled={isDemo}
+                    />
+                    <DollarSign className="w-4 h-4 text-blue-400 absolute left-2 top-2.5" />
+                  </div>
+                  <p className="text-xs text-blue-600 mt-1">Current avg: $3.45</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-blue-800 mb-2">Vehicle MPG</label>
+                  <input
+                    type="number"
+                    value={tourData.mpg}
+                    onChange={(e) => handleInputChange('mpg', parseInt(e.target.value))}
+                    className="w-full px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    disabled={isDemo}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-blue-800 mb-2">Hotel Budget/Person/Night</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={tourData.hotelBudgetPerPerson}
+                      onChange={(e) => handleInputChange('hotelBudgetPerPerson', parseInt(e.target.value))}
+                      className="w-full px-3 py-2 pl-7 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                      disabled={isDemo}
+                    />
+                    <DollarSign className="w-4 h-4 text-blue-400 absolute left-2 top-2.5" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-blue-800 mb-2">Number of People</label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="4"
+                    value={tourData.numberOfPeople}
+                    onChange={(e) => handleInputChange('numberOfPeople', parseInt(e.target.value))}
+                    className="w-full px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    disabled={isDemo}
+                  />
+                </div>
+              </div>
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-blue-800 mb-2">Daily Food Rate per Person</label>
+                <div className="relative max-w-xs">
+                  <input
+                    type="number"
+                    value={tourData.dailyFoodRate}
+                    onChange={(e) => handleInputChange('dailyFoodRate', parseInt(e.target.value))}
+                    className="w-full px-3 py-2 pl-7 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                    disabled={isDemo}
+                  />
+                  <DollarSign className="w-4 h-4 text-blue-400 absolute left-2 top-2.5" />
+                </div>
+              </div>
+            </div>
+
             {/* Revenue Projection */}
             <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
               <h4 className="font-bold text-gray-900 mb-4 flex items-center">
                 <DollarSign className="w-5 h-5 text-green-600 mr-2" />
-                Revenue Projection
+                Revenue & Expense Projection
               </h4>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
@@ -1151,7 +1407,7 @@ nicole.concerts@email.com`,
                       <span className="font-semibold">${(calculateDonationRevenue() * 16).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Host Fees (16 shows)</span>
+                      <span className="text-gray-600">Host Guarantees (16 shows)</span>
                       <span className="font-semibold">${(tourData.hostFee * 16).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
@@ -1167,38 +1423,50 @@ nicole.concerts@email.com`,
                   </div>
                 </div>
                 <div>
-                  <h5 className="font-semibold text-gray-800 mb-3">Estimated Costs</h5>
+                  <h5 className="font-semibold text-gray-800 mb-3">Detailed Expense Breakdown</h5>
                   <div className="space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Gas (2,847 miles)</span>
-                      <span className="font-semibold">$427</span>
+                      <span className="text-gray-600 flex items-center">
+                        <Fuel className="w-4 h-4 mr-1" />
+                        Gas ({totalMiles} mi @ {tourData.mpg} mpg)
+                      </span>
+                      <span className="font-semibold">${gasCost}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Hotels (12 nights)</span>
-                      <span className="font-semibold">$1,020</span>
+                      <span className="text-gray-600 flex items-center">
+                        <Hotel className="w-4 h-4 mr-1" />
+                        Hotels ({numberOfNights} nights × {tourData.numberOfPeople} people)
+                      </span>
+                      <span className="font-semibold">${hotelCost}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Food (21 days)</span>
-                      <span className="font-semibold">$945</span>
+                      <span className="text-gray-600 flex items-center">
+                        <Utensils className="w-4 h-4 mr-1" />
+                        Food ({numberOfDays} days × {tourData.numberOfPeople} people)
+                      </span>
+                      <span className="font-semibold">${foodCost}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Miscellaneous</span>
-                      <span className="font-semibold">$300</span>
+                      <span className="text-gray-600 flex items-center">
+                        <Calculator className="w-4 h-4 mr-1" />
+                        Miscellaneous (20% of above)
+                      </span>
+                      <span className="font-semibold">${miscellaneousCost}</span>
                     </div>
                     <div className="border-t pt-2 flex justify-between font-bold text-lg">
                       <span>Total Costs</span>
-                      <span className="text-red-600">$2,692</span>
+                      <span className="text-red-600">${totalCosts.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="mt-6 pt-6 border-t border-gray-200 text-center">
                 <div className="text-3xl font-bold text-green-600 mb-2">
-                  ${((calculateDonationRevenue() + tourData.hostFee + tourData.merchandiseGoal) * 16 - 2692).toLocaleString()}
+                  ${((calculateDonationRevenue() + tourData.hostFee + tourData.merchandiseGoal) * 16 - totalCosts).toLocaleString()}
                 </div>
                 <div className="text-gray-700">Projected Net Profit</div>
                 <div className="text-sm text-gray-500 mt-1">
-                  {Math.round((((calculateDonationRevenue() + tourData.hostFee + tourData.merchandiseGoal) * 16 - 2692) / ((calculateDonationRevenue() + tourData.hostFee + tourData.merchandiseGoal) * 16)) * 100)}% profit margin
+                  {Math.round((((calculateDonationRevenue() + tourData.hostFee + tourData.merchandiseGoal) * 16 - totalCosts) / ((calculateDonationRevenue() + tourData.hostFee + tourData.merchandiseGoal) * 16)) * 100)}% profit margin
                 </div>
               </div>
             </div>
@@ -1449,7 +1717,7 @@ nicole.concerts@email.com`,
 
   return (
     <Layout 
-      title="Plan AI Tour" 
+      title="Plan My Tour" 
       description="Create your perfect tour route using AI-powered optimization"
     >
       <div className="min-h-screen bg-gray-50 -mt-20">
