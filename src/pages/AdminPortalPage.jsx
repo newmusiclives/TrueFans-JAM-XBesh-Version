@@ -75,7 +75,31 @@ import {
   Receipt,
   Banknote,
   Wallet,
-  Type
+  Type,
+  Plane,
+  Car,
+  Utensils,
+  ShoppingBag,
+  Truck,
+  Home,
+  Wifi as WifiIcon,
+  Navigation,
+  Route,
+  Package,
+  CreditCard as PaymentIcon,
+  Smartphone,
+  Camera as CameraIcon,
+  Megaphone,
+  Ticket,
+  Gift,
+  Coffee,
+  Fuel,
+  MapIcon,
+  Compass,
+  Train,
+  Bus,
+  Ship,
+  Bike
 } from 'lucide-react'
 
 const AdminPortalPage = () => {
@@ -87,7 +111,42 @@ const AdminPortalPage = () => {
     bandsInTown: 'connected',
     spotify: 'connected',
     trueFansConnect: 'connected',
-    dialogLightwork: 'connected'
+    dialogLightwork: 'connected',
+    // Travel & Accommodation
+    booking: 'disconnected',
+    expedia: 'disconnected',
+    airbnb: 'disconnected',
+    hotels: 'disconnected',
+    // Transportation
+    uber: 'disconnected',
+    lyft: 'disconnected',
+    enterprise: 'disconnected',
+    hertz: 'disconnected',
+    // Airlines
+    american: 'disconnected',
+    delta: 'disconnected',
+    united: 'disconnected',
+    southwest: 'disconnected',
+    // Food & Services
+    doordash: 'disconnected',
+    ubereats: 'disconnected',
+    grubhub: 'disconnected',
+    // Equipment & Logistics
+    uhaul: 'disconnected',
+    fedex: 'disconnected',
+    ups: 'disconnected',
+    // Marketing & Social
+    mailchimp: 'disconnected',
+    constant: 'disconnected',
+    facebook: 'disconnected',
+    instagram: 'disconnected',
+    // Payment & Financial
+    stripe: 'disconnected',
+    paypal: 'disconnected',
+    square: 'disconnected',
+    // Insurance & Legal
+    progressive: 'disconnected',
+    legalzoom: 'disconnected'
   })
   const [dashboardData, setDashboardData] = useState({
     totalRevenue: 247850,
@@ -459,325 +518,419 @@ const AdminPortalPage = () => {
     </div>
   )
 
-  const renderIntegrations = () => (
-    <div className="space-y-6">
-      {/* Integration Overview */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-2">API Integrations</h3>
-        <p className="text-gray-600">Manage your third-party integrations and data synchronization</p>
-      </div>
-
-      {/* Manifest Financial */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center">
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-              <CreditCard className="w-6 h-6 text-green-600" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">Manifest Financial</h3>
-              <p className="text-sm text-gray-600">Transactional data and payment processing</p>
-            </div>
+  const renderIntegrationCard = (integration) => (
+    <div key={integration.id} className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center">
+          <div className={`w-12 h-12 bg-${integration.color}-100 rounded-lg flex items-center justify-center mr-4`}>
+            <integration.icon className={`w-6 h-6 text-${integration.color}-600`} />
           </div>
-          <div className="flex items-center space-x-3">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-              apiStatuses.manifest === 'connected' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-            }`}>
-              <div className={`w-2 h-2 rounded-full mr-2 ${
-                apiStatuses.manifest === 'connected' ? 'bg-green-500' : 'bg-red-500'
-              }`}></div>
-              {apiStatuses.manifest}
-            </span>
-            {apiStatuses.manifest === 'connected' ? (
-              <button 
-                onClick={() => refreshApiData('manifest')}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors flex items-center"
-                disabled={isLoading}
-              >
-                <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-                Sync
-              </button>
-            ) : (
-              <button 
-                onClick={() => connectApi('manifest')}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors"
-                disabled={isLoading}
-              >
-                Connect
-              </button>
-            )}
+          <div>
+            <h3 className="text-lg font-bold text-gray-900">{integration.name}</h3>
+            <p className="text-sm text-gray-600">{integration.description}</p>
           </div>
         </div>
-        
+        <div className="flex items-center space-x-3">
+          <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+            apiStatuses[integration.id] === 'connected' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+          }`}>
+            <div className={`w-2 h-2 rounded-full mr-2 ${
+              apiStatuses[integration.id] === 'connected' ? 'bg-green-500' : 'bg-red-500'
+            }`}></div>
+            {apiStatuses[integration.id]}
+          </span>
+          {apiStatuses[integration.id] === 'connected' ? (
+            <button 
+              onClick={() => refreshApiData(integration.id)}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors flex items-center"
+              disabled={isLoading}
+            >
+              <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              Sync
+            </button>
+          ) : (
+            <button 
+              onClick={() => connectApi(integration.id)}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors"
+              disabled={isLoading}
+            >
+              Connect
+            </button>
+          )}
+        </div>
+      </div>
+      
+      {integration.metrics && (
         <div className="grid md:grid-cols-4 gap-4">
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">{integrationData.manifest.totalTransactions.toLocaleString()}</p>
-            <p className="text-sm text-gray-600">Total Transactions</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-green-600">${integrationData.manifest.monthlyVolume.toLocaleString()}</p>
-            <p className="text-sm text-gray-600">Monthly Volume</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-blue-600">${integrationData.manifest.averageTransaction}</p>
-            <p className="text-sm text-gray-600">Avg Transaction</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-sm font-semibold text-gray-900">Last Sync</p>
-            <p className="text-xs text-gray-600">{integrationData.manifest.lastSync}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* BandsInTown */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-              <Building className="w-6 h-6 text-purple-600" />
+          {integration.metrics.map((metric, index) => (
+            <div key={index} className="bg-gray-50 rounded-lg p-4 text-center">
+              <p className={`text-2xl font-bold ${metric.color || 'text-gray-900'}`}>{metric.value}</p>
+              <p className="text-sm text-gray-600">{metric.label}</p>
             </div>
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">BandsInTown</h3>
-              <p className="text-sm text-gray-600">Venue data and event information</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-              apiStatuses.bandsInTown === 'connected' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-            }`}>
-              <div className={`w-2 h-2 rounded-full mr-2 ${
-                apiStatuses.bandsInTown === 'connected' ? 'bg-green-500' : 'bg-red-500'
-              }`}></div>
-              {apiStatuses.bandsInTown}
-            </span>
-            {apiStatuses.bandsInTown === 'connected' ? (
-              <button 
-                onClick={() => refreshApiData('bandsInTown')}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors flex items-center"
-                disabled={isLoading}
-              >
-                <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-                Sync
-              </button>
-            ) : (
-              <button 
-                onClick={() => connectApi('bandsInTown')}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors"
-                disabled={isLoading}
-              >
-                Connect
-              </button>
-            )}
-          </div>
+          ))}
         </div>
-        
-        <div className="grid md:grid-cols-4 gap-4">
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">{integrationData.bandsInTown.totalVenues.toLocaleString()}</p>
-            <p className="text-sm text-gray-600">Total Venues</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-green-600">{integrationData.bandsInTown.activeVenues.toLocaleString()}</p>
-            <p className="text-sm text-gray-600">Active Venues</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-blue-600">{integrationData.bandsInTown.newVenues}</p>
-            <p className="text-sm text-gray-600">New This Month</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-sm font-semibold text-gray-900">Last Sync</p>
-            <p className="text-xs text-gray-600">{integrationData.bandsInTown.lastSync}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Spotify */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center">
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-              <Headphones className="w-6 h-6 text-green-600" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">Spotify</h3>
-              <p className="text-sm text-gray-600">Music play data and analytics</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-              apiStatuses.spotify === 'connected' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-            }`}>
-              <div className={`w-2 h-2 rounded-full mr-2 ${
-                apiStatuses.spotify === 'connected' ? 'bg-green-500' : 'bg-red-500'
-              }`}></div>
-              {apiStatuses.spotify}
-            </span>
-            {apiStatuses.spotify === 'connected' ? (
-              <button 
-                onClick={() => refreshApiData('spotify')}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors flex items-center"
-                disabled={isLoading}
-              >
-                <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-                Sync
-              </button>
-            ) : (
-              <button 
-                onClick={() => connectApi('spotify')}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors"
-                disabled={isLoading}
-              >
-                Connect
-              </button>
-            )}
-          </div>
-        </div>
-        
-        <div className="grid md:grid-cols-4 gap-4">
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">{integrationData.spotify.totalPlays.toLocaleString()}</p>
-            <p className="text-sm text-gray-600">Total Plays</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-green-600">{integrationData.spotify.monthlyListeners.toLocaleString()}</p>
-            <p className="text-sm text-gray-600">Monthly Listeners</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-lg font-bold text-blue-600">{integrationData.spotify.topTrack}</p>
-            <p className="text-sm text-gray-600">Top Track</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-sm font-semibold text-gray-900">Last Sync</p>
-            <p className="text-xs text-gray-600">{integrationData.spotify.lastSync}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* TrueFans CONNECT™ */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-              <Users className="w-6 h-6 text-blue-600" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">TrueFans CONNECT™</h3>
-              <p className="text-sm text-gray-600">Fan engagement and community platform</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-              apiStatuses.trueFansConnect === 'connected' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-            }`}>
-              <div className={`w-2 h-2 rounded-full mr-2 ${
-                apiStatuses.trueFansConnect === 'connected' ? 'bg-green-500' : 'bg-red-500'
-              }`}></div>
-              {apiStatuses.trueFansConnect}
-            </span>
-            {apiStatuses.trueFansConnect === 'connected' ? (
-              <button 
-                onClick={() => refreshApiData('trueFansConnect')}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors flex items-center"
-                disabled={isLoading}
-              >
-                <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-                Sync
-              </button>
-            ) : (
-              <button 
-                onClick={() => connectApi('trueFansConnect')}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors"
-                disabled={isLoading}
-              >
-                Connect
-              </button>
-            )}
-          </div>
-        </div>
-        
-        <div className="grid md:grid-cols-4 gap-4">
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">{integrationData.trueFansConnect.activeUsers.toLocaleString()}</p>
-            <p className="text-sm text-gray-600">Active Users</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-green-600">{integrationData.trueFansConnect.monthlyEngagement}%</p>
-            <p className="text-sm text-gray-600">Engagement Rate</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-blue-600">{integrationData.trueFansConnect.newSignups}</p>
-            <p className="text-sm text-gray-600">New Signups</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-sm font-semibold text-gray-900">Last Sync</p>
-            <p className="text-xs text-gray-600">{integrationData.trueFansConnect.lastSync}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* DIALOG by Lightwork Digital */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center">
-            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
-              <MessageCircle className="w-6 h-6 text-orange-600" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">DIALOG by Lightwork Digital</h3>
-              <p className="text-sm text-gray-600">Communication and messaging platform</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-              apiStatuses.dialogLightwork === 'connected' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-            }`}>
-              <div className={`w-2 h-2 rounded-full mr-2 ${
-                apiStatuses.dialogLightwork === 'connected' ? 'bg-green-500' : 'bg-red-500'
-              }`}></div>
-              {apiStatuses.dialogLightwork}
-            </span>
-            {apiStatuses.dialogLightwork === 'connected' ? (
-              <button 
-                onClick={() => refreshApiData('dialogLightwork')}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors flex items-center"
-                disabled={isLoading}
-              >
-                <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-                Sync
-              </button>
-            ) : (
-              <button 
-                onClick={() => connectApi('dialogLightwork')}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors"
-                disabled={isLoading}
-              >
-                Connect
-              </button>
-            )}
-          </div>
-        </div>
-        
-        <div className="grid md:grid-cols-4 gap-4">
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">{integrationData.dialogLightwork.activeConversations.toLocaleString()}</p>
-            <p className="text-sm text-gray-600">Active Conversations</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-green-600">{integrationData.dialogLightwork.responseRate}%</p>
-            <p className="text-sm text-gray-600">Response Rate</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-blue-600">{integrationData.dialogLightwork.avgResponseTime}</p>
-            <p className="text-sm text-gray-600">Avg Response Time</p>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center">
-            <p className="text-sm font-semibold text-gray-900">Last Sync</p>
-            <p className="text-xs text-gray-600">{integrationData.dialogLightwork.lastSync}</p>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   )
+
+  const renderIntegrations = () => {
+    const integrationCategories = [
+      {
+        title: 'Core Platform Integrations',
+        integrations: [
+          {
+            id: 'manifest',
+            name: 'Manifest Financial',
+            description: 'Transactional data and payment processing',
+            icon: CreditCard,
+            color: 'green',
+            metrics: [
+              { value: '1,247', label: 'Total Transactions' },
+              { value: '$89,500', label: 'Monthly Volume', color: 'text-green-600' },
+              { value: '$285', label: 'Avg Transaction', color: 'text-blue-600' },
+              { value: '2 min ago', label: 'Last Sync' }
+            ]
+          },
+          {
+            id: 'bandsInTown',
+            name: 'BandsInTown',
+            description: 'Venue data and event information',
+            icon: Building,
+            color: 'purple',
+            metrics: [
+              { value: '2,847', label: 'Total Venues' },
+              { value: '1,923', label: 'Active Venues', color: 'text-green-600' },
+              { value: '124', label: 'New This Month', color: 'text-blue-600' },
+              { value: '5 min ago', label: 'Last Sync' }
+            ]
+          },
+          {
+            id: 'spotify',
+            name: 'Spotify',
+            description: 'Music play data and analytics',
+            icon: Headphones,
+            color: 'green',
+            metrics: [
+              { value: '847,293', label: 'Total Plays' },
+              { value: '23,847', label: 'Monthly Listeners', color: 'text-green-600' },
+              { value: 'Acoustic Dreams', label: 'Top Track', color: 'text-blue-600' },
+              { value: '1 min ago', label: 'Last Sync' }
+            ]
+          },
+          {
+            id: 'trueFansConnect',
+            name: 'TrueFans CONNECT™',
+            description: 'Fan engagement and community platform',
+            icon: Users,
+            color: 'blue',
+            metrics: [
+              { value: '15,847', label: 'Active Users' },
+              { value: '89.2%', label: 'Engagement Rate', color: 'text-green-600' },
+              { value: '342', label: 'New Signups', color: 'text-blue-600' },
+              { value: '3 min ago', label: 'Last Sync' }
+            ]
+          },
+          {
+            id: 'dialogLightwork',
+            name: 'DIALOG by Lightwork Digital',
+            description: 'Communication and messaging platform',
+            icon: MessageCircle,
+            color: 'orange',
+            metrics: [
+              { value: '1,247', label: 'Active Conversations' },
+              { value: '94.8%', label: 'Response Rate', color: 'text-green-600' },
+              { value: '2.3 min', label: 'Avg Response Time', color: 'text-blue-600' },
+              { value: '2 min ago', label: 'Last Sync' }
+            ]
+          }
+        ]
+      },
+      {
+        title: 'Travel & Accommodation',
+        integrations: [
+          {
+            id: 'booking',
+            name: 'Booking.com',
+            description: 'Hotel and accommodation booking platform',
+            icon: Building,
+            color: 'blue'
+          },
+          {
+            id: 'expedia',
+            name: 'Expedia',
+            description: 'Travel booking and accommodation services',
+            icon: Plane,
+            color: 'yellow'
+          },
+          {
+            id: 'airbnb',
+            name: 'Airbnb',
+            description: 'Short-term rental and unique stays',
+            icon: Home,
+            color: 'red'
+          },
+          {
+            id: 'hotels',
+            name: 'Hotels.com',
+            description: 'Hotel reservations and deals',
+            icon: Building,
+            color: 'red'
+          }
+        ]
+      },
+      {
+        title: 'Transportation Services',
+        integrations: [
+          {
+            id: 'uber',
+            name: 'Uber',
+            description: 'Ride-sharing and transportation',
+            icon: Car,
+            color: 'black'
+          },
+          {
+            id: 'lyft',
+            name: 'Lyft',
+            description: 'Ride-sharing services',
+            icon: Car,
+            color: 'pink'
+          },
+          {
+            id: 'enterprise',
+            name: 'Enterprise Rent-A-Car',
+            description: 'Car rental services',
+            icon: Car,
+            color: 'green'
+          },
+          {
+            id: 'hertz',
+            name: 'Hertz',
+            description: 'Car rental and vehicle services',
+            icon: Car,
+            color: 'yellow'
+          }
+        ]
+      },
+      {
+        title: 'Airlines & Flight Services',
+        integrations: [
+          {
+            id: 'american',
+            name: 'American Airlines',
+            description: 'Flight booking and travel services',
+            icon: Plane,
+            color: 'red'
+          },
+          {
+            id: 'delta',
+            name: 'Delta Air Lines',
+            description: 'Airline services and flight management',
+            icon: Plane,
+            color: 'blue'
+          },
+          {
+            id: 'united',
+            name: 'United Airlines',
+            description: 'Flight booking and airline services',
+            icon: Plane,
+            color: 'blue'
+          },
+          {
+            id: 'southwest',
+            name: 'Southwest Airlines',
+            description: 'Low-cost airline services',
+            icon: Plane,
+            color: 'orange'
+          }
+        ]
+      },
+      {
+        title: 'Food & Catering Services',
+        integrations: [
+          {
+            id: 'doordash',
+            name: 'DoorDash',
+            description: 'Food delivery and catering services',
+            icon: Utensils,
+            color: 'red'
+          },
+          {
+            id: 'ubereats',
+            name: 'Uber Eats',
+            description: 'Food delivery platform',
+            icon: Utensils,
+            color: 'green'
+          },
+          {
+            id: 'grubhub',
+            name: 'Grubhub',
+            description: 'Online food ordering and delivery',
+            icon: Utensils,
+            color: 'orange'
+          }
+        ]
+      },
+      {
+        title: 'Equipment & Logistics',
+        integrations: [
+          {
+            id: 'uhaul',
+            name: 'U-Haul',
+            description: 'Moving trucks and equipment rental',
+            icon: Truck,
+            color: 'orange'
+          },
+          {
+            id: 'fedex',
+            name: 'FedEx',
+            description: 'Shipping and logistics services',
+            icon: Package,
+            color: 'purple'
+          },
+          {
+            id: 'ups',
+            name: 'UPS',
+            description: 'Package delivery and logistics',
+            icon: Package,
+            color: 'yellow'
+          }
+        ]
+      },
+      {
+        title: 'Marketing & Communication',
+        integrations: [
+          {
+            id: 'mailchimp',
+            name: 'Mailchimp',
+            description: 'Email marketing and automation',
+            icon: Mail,
+            color: 'yellow'
+          },
+          {
+            id: 'constant',
+            name: 'Constant Contact',
+            description: 'Email marketing platform',
+            icon: Mail,
+            color: 'blue'
+          },
+          {
+            id: 'facebook',
+            name: 'Facebook Business',
+            description: 'Social media marketing and advertising',
+            icon: Share2,
+            color: 'blue'
+          },
+          {
+            id: 'instagram',
+            name: 'Instagram Business',
+            description: 'Social media marketing platform',
+            icon: Camera,
+            color: 'pink'
+          }
+        ]
+      },
+      {
+        title: 'Payment & Financial Services',
+        integrations: [
+          {
+            id: 'stripe',
+            name: 'Stripe',
+            description: 'Online payment processing',
+            icon: PaymentIcon,
+            color: 'purple'
+          },
+          {
+            id: 'paypal',
+            name: 'PayPal',
+            description: 'Digital payment platform',
+            icon: PaymentIcon,
+            color: 'blue'
+          },
+          {
+            id: 'square',
+            name: 'Square',
+            description: 'Point of sale and payment processing',
+            icon: PaymentIcon,
+            color: 'black'
+          }
+        ]
+      },
+      {
+        title: 'Insurance & Legal Services',
+        integrations: [
+          {
+            id: 'progressive',
+            name: 'Progressive Insurance',
+            description: 'Travel and equipment insurance',
+            icon: Shield,
+            color: 'blue'
+          },
+          {
+            id: 'legalzoom',
+            name: 'LegalZoom',
+            description: 'Legal services and contract management',
+            icon: FileText,
+            color: 'green'
+          }
+        ]
+      }
+    ]
+
+    return (
+      <div className="space-y-8">
+        {/* Integration Overview */}
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Complete Platform Ecosystem</h3>
+          <p className="text-gray-600">Manage all your third-party integrations for a comprehensive tour management experience</p>
+        </div>
+
+        {/* Integration Categories */}
+        {integrationCategories.map((category, categoryIndex) => (
+          <div key={categoryIndex} className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">{category.title}</h2>
+              <span className="text-sm text-gray-500">
+                {category.integrations.filter(int => apiStatuses[int.id] === 'connected').length} of {category.integrations.length} connected
+              </span>
+            </div>
+            
+            <div className="grid gap-6">
+              {category.integrations.map(integration => renderIntegrationCard(integration))}
+            </div>
+          </div>
+        ))}
+
+        {/* Integration Stats Summary */}
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Integration Summary</h3>
+          <div className="grid md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <p className="text-3xl font-bold text-green-600">
+                {Object.values(apiStatuses).filter(status => status === 'connected').length}
+              </p>
+              <p className="text-sm text-gray-600">Connected Services</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-red-600">
+                {Object.values(apiStatuses).filter(status => status === 'disconnected').length}
+              </p>
+              <p className="text-sm text-gray-600">Available Services</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-blue-600">{Object.keys(apiStatuses).length}</p>
+              <p className="text-sm text-gray-600">Total Integrations</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-purple-600">
+                {Math.round((Object.values(apiStatuses).filter(status => status === 'connected').length / Object.keys(apiStatuses).length) * 100)}%
+              </p>
+              <p className="text-sm text-gray-600">Platform Coverage</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const renderBrandKit = () => (
     <div className="space-y-6">

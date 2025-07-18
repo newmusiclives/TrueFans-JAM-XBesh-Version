@@ -44,15 +44,15 @@ const Layout = ({ children, title, description }) => {
               <span className="text-xl font-bold text-gray-900 whitespace-nowrap">TrueFans JAM</span>
             </Link>
             <div className="hidden md:flex space-x-8 flex-shrink-0">
-              <Link to="/how-it-works" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">How It Works</Link>
-              <Link to="/success-stories" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">Stories</Link>
-              <Link to="/about" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">About</Link>
-              <Link to="/admin" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">Admin</Link>
+              <Link to="/how-it-works" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap" style={{ '--tw-text-opacity': 1, color: 'rgb(42 12 76 / var(--tw-text-opacity))' }}>How It Works</Link>
+              <Link to="/success-stories" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap" style={{ '--tw-text-opacity': 1, color: 'rgb(42 12 76 / var(--tw-text-opacity))' }}>Stories</Link>
+              <Link to="/about" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap" style={{ '--tw-text-opacity': 1, color: 'rgb(42 12 76 / var(--tw-text-opacity))' }}>About</Link>
+              <Link to="/admin" className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap" style={{ '--tw-text-opacity': 1, color: 'rgb(42 12 76 / var(--tw-text-opacity))' }}>Admin</Link>
             </div>
             <div className="flex items-center space-x-4 flex-shrink-0">
-              <button className="text-gray-700 hover:text-purple-600 transition-colors whitespace-nowrap">Sign In</button>
+              <button className="text-gray-700 transition-colors whitespace-nowrap hover:text-purple-600" style={{ '--tw-text-opacity': 1, color: 'rgb(42 12 76 / var(--tw-text-opacity))' }}>Sign In</button>
               <button 
-                className="text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+                className="text-white px-4 py-2 rounded-lg transition-colors whitespace-nowrap hover:shadow-lg"
                 style={{ background: 'linear-gradient(to right, rgb(42,12,76), rgb(23,24,73))' }}
               >
                 Join Now

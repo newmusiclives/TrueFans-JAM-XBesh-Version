@@ -38,7 +38,7 @@ html {
   animation: fadeIn 0.6s ease-out;
 }
 
-/* Custom gradient backgrounds using exact RGB values */
+/* Brand Color System - Exact RGB Values */
 .gradient-bg {
   background: linear-gradient(to bottom right, rgb(42,12,76), rgb(23,24,73));
 }
@@ -47,7 +47,11 @@ html {
   background: linear-gradient(to top left, rgb(42,12,76), rgb(23,24,73));
 }
 
-/* Custom button styles with exact colors */
+.gradient-bg-horizontal {
+  background: linear-gradient(to right, rgb(42,12,76), rgb(23,24,73));
+}
+
+/* Custom button styles with exact brand colors */
 .btn-primary {
   background: linear-gradient(to right, rgb(42,12,76), rgb(23,24,73));
   @apply text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300;
@@ -59,7 +63,7 @@ html {
   @apply px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-50 transition-all duration-300;
 }
 
-/* Custom accent colors */
+/* Brand color utilities */
 .text-brand-primary {
   color: rgb(42,12,76);
 }
@@ -82,4 +86,46 @@ html {
 
 .border-brand-secondary {
   border-color: rgb(23,24,73);
+}
+
+/* Orange accent color for highlights */
+.text-accent-orange {
+  color: #f97316;
+}
+
+.bg-accent-orange {
+  background-color: #f97316;
+}
+
+.border-accent-orange {
+  border-color: #f97316;
+}
+
+/* Hover states with brand colors */
+.hover-brand-primary:hover {
+  color: rgb(42,12,76);
+}
+
+.hover-brand-secondary:hover {
+  color: rgb(23,24,73);
+}
+
+/* Custom focus states */
+.focus-brand:focus {
+  outline: 2px solid rgb(42,12,76);
+  outline-offset: 2px;
+}
+
+/* Progress bars and loading states */
+.progress-brand {
+  background: linear-gradient(to right, rgb(42,12,76), rgb(23,24,73));
+}
+
+/* Custom shadows with brand colors */
+.shadow-brand {
+  box-shadow: 0 10px 25px -5px rgba(42, 12, 76, 0.1), 0 4px 6px -2px rgba(42, 12, 76, 0.05);
+}
+
+.shadow-brand-lg {
+  box-shadow: 0 20px 25px -5px rgba(42, 12, 76, 0.1), 0 10px 10px -5px rgba(42, 12, 76, 0.04);
 }

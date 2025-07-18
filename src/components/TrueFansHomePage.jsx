@@ -1,12 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Music, Shield, ArrowRight, DollarSign, Route, MapPin, Users, Mail, Phone, MapPin as LocationIcon } from 'lucide-react'
+import { Music, ArrowRight, Shield, Route, DollarSign, MapPin, Users, Globe, Mail, Phone } from 'lucide-react'
 
 const TrueFansHomePage = () => {
   return (
-    <div className="min-h-screen" style={{
-      background: 'linear-gradient(to bottom right, rgb(42,12,76), rgb(23,24,73))'
-    }}>
+    <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom right, rgb(42,12,76), rgb(23,24,73))' }}>
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,13 +15,13 @@ const TrueFansHomePage = () => {
             </Link>
             
             <nav className="hidden md:flex space-x-8">
-              <Link to="/how-it-works" className="text-gray-700 hover:text-purple-600 font-medium">How It Works</Link>
-              <Link to="/success-stories" className="text-gray-700 hover:text-purple-600 font-medium">Stories</Link>
-              <Link to="/about" className="text-gray-700 hover:text-purple-600 font-medium">About</Link>
+              <Link to="/how-it-works" className="text-gray-700 font-medium transition-colors hover:text-purple-600" style={{ '--tw-text-opacity': 1, color: 'rgb(42 12 76 / var(--tw-text-opacity))' }}>How It Works</Link>
+              <Link to="/success-stories" className="text-gray-700 font-medium transition-colors hover:text-purple-600" style={{ '--tw-text-opacity': 1, color: 'rgb(42 12 76 / var(--tw-text-opacity))' }}>Stories</Link>
+              <Link to="/about" className="text-gray-700 font-medium transition-colors hover:text-purple-600" style={{ '--tw-text-opacity': 1, color: 'rgb(42 12 76 / var(--tw-text-opacity))' }}>About</Link>
             </nav>
             
             <div className="flex items-center space-x-4">
-              <button className="text-gray-700 hover:text-purple-600 font-medium">Sign In</button>
+              <button className="text-gray-700 font-medium transition-colors hover:text-purple-600" style={{ '--tw-text-opacity': 1, color: 'rgb(42 12 76 / var(--tw-text-opacity))' }}>Sign In</button>
               <Link to="/artist-signup">
                 <button 
                   className="text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-300"
@@ -37,41 +35,39 @@ const TrueFansHomePage = () => {
         </div>
       </header>
 
-      {/* Main Hero Section */}
-      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center max-w-4xl mx-auto">
+      {/* Main Content */}
+      <main className="flex-1 px-4 sm:px-6 lg:px-8 py-20 text-white">
+        <div className="max-w-6xl mx-auto text-center">
           {/* Orange Circle Icon */}
-          <div className="mb-12">
-            <div className="w-32 h-32 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto shadow-2xl">
-              <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-              </svg>
+          <div className="flex justify-center mb-12">
+            <div className="w-24 h-24 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full flex items-center justify-center shadow-lg">
+              <Route className="w-12 h-12 text-white" />
             </div>
           </div>
 
-          {/* Main Title */}
-          <h1 className="text-6xl md:text-7xl font-bold text-white mb-8 tracking-tight">
+          {/* Main Heading */}
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
             TrueFans JAM<sup className="text-3xl">™</sup>
           </h1>
 
           {/* Subtitle */}
-          <h2 className="text-2xl md:text-3xl text-white/90 font-light mb-8 leading-relaxed">
+          <h2 className="text-2xl md:text-3xl font-semibold mb-12 text-white/90">
             AI-Powered Tour Planning That Transforms Your Fans Into Venues
           </h2>
 
           {/* Description */}
-          <p className="text-xl text-white/80 mb-12 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-xl text-white/80 mb-16 leading-relaxed max-w-4xl mx-auto">
             Upload your fan email list and let our AI create profitable tour routes connecting you with 
             supporters who want to host intimate concerts in their homes.
           </p>
 
           {/* Info Box */}
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 mb-12 max-w-2xl mx-auto">
+          <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 mb-16 max-w-4xl mx-auto">
             <div className="flex items-center justify-center mb-4">
-              <Shield className="w-6 h-6 text-yellow-400 mr-3" />
-              <h3 className="text-yellow-400 text-xl font-semibold">TrueFans CONNECT™ Required</h3>
+              <Shield className="w-6 h-6 text-orange-400 mr-3" />
+              <h3 className="text-orange-400 font-semibold text-lg">TrueFans CONNECT™ Required</h3>
             </div>
-            <p className="text-white/80 leading-relaxed">
+            <p className="text-white/90 leading-relaxed">
               TrueFans JAM™ integrates with your TrueFans CONNECT™ account to access your fan data and 
               manage tour bookings. New to TrueFans? We'll help you create your CONNECT™ account as 
               part of the JAM™ signup process.
@@ -79,136 +75,107 @@ const TrueFansHomePage = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-20">
             <Link to="/artist-signup">
-              <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center">
+              <button className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-10 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center min-w-[220px]">
                 Join as Artist
                 <ArrowRight className="w-5 h-5 ml-2" />
               </button>
             </Link>
             
             <Link to="/tour-planner">
-              <button className="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all duration-300 flex items-center justify-center">
+              <button className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all duration-300 flex items-center justify-center min-w-[220px]">
                 Plan My Tour
                 <Route className="w-5 h-5 ml-2" />
               </button>
             </Link>
           </div>
-
-          {/* Bottom Icons with Labels */}
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-8 sm:gap-12 mb-20">
-            <Link to="/revenue-calculator" className="flex flex-col items-center group">
-              <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer mb-3">
-                <DollarSign className="w-8 h-8 text-yellow-400" />
-              </div>
-              <div className="text-center">
-                <h4 className="text-white font-semibold text-sm mb-1">Revenue Calculator</h4>
-                <p className="text-white/70 text-xs">Estimate your tour earnings</p>
-              </div>
-            </Link>
-
-            <Link to="/tour-planner" className="flex flex-col items-center group">
-              <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer mb-3">
-                <Route className="w-8 h-8 text-yellow-400" />
-              </div>
-              <div className="text-center">
-                <h4 className="text-white font-semibold text-sm mb-1">Tour Planner</h4>
-                <p className="text-white/70 text-xs">Create your custom tour route</p>
-              </div>
-            </Link>
-
-            <Link to="/vetted-hosts" className="flex flex-col items-center group">
-              <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer mb-3">
-                <MapPin className="w-8 h-8 text-yellow-400" />
-              </div>
-              <div className="text-center">
-                <h4 className="text-white font-semibold text-sm mb-1">Vetted Hosts</h4>
-                <p className="text-white/70 text-xs">Browse verified host venues</p>
-              </div>
-            </Link>
-
-            <Link to="/host-community" className="flex flex-col items-center group">
-              <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 cursor-pointer mb-3">
-                <Users className="w-8 h-8 text-yellow-400" />
-              </div>
-              <div className="text-center">
-                <h4 className="text-white font-semibold text-sm mb-1">Host Community</h4>
-                <p className="text-white/70 text-xs">Connect with hosting fans</p>
-              </div>
-            </Link>
-          </div>
         </div>
       </main>
 
+      {/* Bottom Navigation Icons with Descriptions - Fixed above footer */}
+      <div className="flex justify-center pb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl">
+          <Link to="/revenue-calculator" className="flex flex-col items-center group">
+            <div className="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300 border border-white/20 mb-3">
+              <DollarSign className="w-6 h-6 text-orange-400" />
+            </div>
+            <span className="text-white/80 text-sm font-medium group-hover:text-white transition-colors text-center">Revenue Calculator</span>
+          </Link>
+          
+          <Link to="/tour-planner" className="flex flex-col items-center group">
+            <div className="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300 border border-white/20 mb-3">
+              <Route className="w-6 h-6 text-orange-400" />
+            </div>
+            <span className="text-white/80 text-sm font-medium group-hover:text-white transition-colors text-center">Plan My Tour</span>
+          </Link>
+          
+          <Link to="/vetted-hosts" className="flex flex-col items-center group">
+            <div className="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300 border border-white/20 mb-3">
+              <MapPin className="w-6 h-6 text-orange-400" />
+            </div>
+            <span className="text-white/80 text-sm font-medium group-hover:text-white transition-colors text-center">Vetted Hosts</span>
+          </Link>
+          
+          <Link to="/artist-signup" className="flex flex-col items-center group">
+            <div className="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300 border border-white/20 mb-3">
+              <Users className="w-6 h-6 text-orange-400" />
+            </div>
+            <span className="text-white/80 text-sm font-medium group-hover:text-white transition-colors text-center">Join as Artist</span>
+          </Link>
+        </div>
+      </div>
+
       {/* Footer */}
-      <footer className="bg-black/20 backdrop-blur-sm border-t border-white/10 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Company Info */}
-            <div className="col-span-1 md:col-span-2">
+      <footer className="text-white py-16" style={{ background: 'linear-gradient(to bottom right, rgb(42,12,76), rgb(23,24,73))' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
               <div className="flex items-center mb-4">
-                <Music className="w-8 h-8 mr-3 text-orange-500" />
-                <span className="text-2xl font-bold text-white">TrueFans JAM</span>
+                <Music className="w-8 h-8 text-orange-400 mr-2" />
+                <span className="text-xl font-bold">TrueFans JAM</span>
               </div>
-              <p className="text-white/70 mb-6 leading-relaxed">
-                Revolutionizing live music through AI-powered tour planning that connects artists 
-                with their most dedicated fans for intimate, profitable performances.
+              <p className="text-white/70 mb-4">
+                Connecting independent artists with their true fans through intimate, authentic musical experiences.
               </p>
               <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300 cursor-pointer">
-                  <span className="text-white font-bold">f</span>
-                </div>
-                <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300 cursor-pointer">
-                  <span className="text-white font-bold">t</span>
-                </div>
-                <div className="w-10 h-10 bg-white/10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300 cursor-pointer">
-                  <span className="text-white font-bold">in</span>
-                </div>
+                <Globe className="w-5 h-5 text-white/70 hover:text-white cursor-pointer" />
+                <Mail className="w-5 h-5 text-white/70 hover:text-white cursor-pointer" />
+                <Phone className="w-5 h-5 text-white/70 hover:text-white cursor-pointer" />
               </div>
             </div>
-
-            {/* Quick Links */}
             <div>
-              <h3 className="text-white font-semibold text-lg mb-4">Quick Links</h3>
-              <ul className="space-y-3">
-                <li><Link to="/how-it-works" className="text-white/70 hover:text-orange-400 transition-colors">How It Works</Link></li>
-                <li><Link to="/success-stories" className="text-white/70 hover:text-orange-400 transition-colors">Success Stories</Link></li>
-                <li><Link to="/tour-planner" className="text-white/70 hover:text-orange-400 transition-colors">Tour Planner</Link></li>
-                <li><Link to="/revenue-calculator" className="text-white/70 hover:text-orange-400 transition-colors">Revenue Calculator</Link></li>
-                <li><Link to="/vetted-hosts" className="text-white/70 hover:text-orange-400 transition-colors">Vetted Hosts</Link></li>
+              <h4 className="font-bold mb-4">For Artists</h4>
+              <ul className="space-y-2 text-white/70">
+                <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
+                <li><Link to="/success-stories" className="hover:text-white transition-colors">Success Stories</Link></li>
+                <li><Link to="/revenue-calculator" className="hover:text-white transition-colors">Revenue Calculator</Link></li>
+                <li><Link to="/artist-resources" className="hover:text-white transition-colors">Artist Resources</Link></li>
               </ul>
             </div>
-
-            {/* Contact Info */}
             <div>
-              <h3 className="text-white font-semibold text-lg mb-4">Contact</h3>
-              <div className="space-y-3">
-                <div className="flex items-center">
-                  <Mail className="w-5 h-5 text-orange-400 mr-3" />
-                  <span className="text-white/70">hello@truefansjam.com</span>
-                </div>
-                <div className="flex items-center">
-                  <Phone className="w-5 h-5 text-orange-400 mr-3" />
-                  <span className="text-white/70">1-800-TRUEFANS</span>
-                </div>
-                <div className="flex items-center">
-                  <LocationIcon className="w-5 h-5 text-orange-400 mr-3" />
-                  <span className="text-white/70">Nashville, TN</span>
-                </div>
-              </div>
+              <h4 className="font-bold mb-4">For Hosts</h4>
+              <ul className="space-y-2 text-white/70">
+                <li><Link to="/become-host" className="hover:text-white transition-colors">Become a Host</Link></li>
+                <li><Link to="/vetted-hosts" className="hover:text-white transition-colors">Vetted Hosts Program</Link></li>
+                <li><Link to="/host-guidelines" className="hover:text-white transition-colors">Host Guidelines</Link></li>
+                <li><Link to="/venue-requirements" className="hover:text-white transition-colors">Venue Requirements</Link></li>
+                <li><Link to="/host-community" className="hover:text-white transition-colors">Host Community</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4">Support</h4>
+              <ul className="space-y-2 text-white/70">
+                <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
+                <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+                <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                <li><Link to="/admin" className="hover:text-white transition-colors">Admin Portal</Link></li>
+              </ul>
             </div>
           </div>
-
-          {/* Bottom Bar */}
-          <div className="border-t border-white/10 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-white/60 text-sm">
-              © 2024 TrueFans JAM™. All rights reserved.
-            </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link to="/privacy" className="text-white/60 hover:text-orange-400 text-sm transition-colors">Privacy Policy</Link>
-              <Link to="/terms" className="text-white/60 hover:text-orange-400 text-sm transition-colors">Terms of Service</Link>
-              <Link to="/support" className="text-white/60 hover:text-orange-400 text-sm transition-colors">Support</Link>
-            </div>
+          <div className="border-t border-white/20 mt-12 pt-8 text-center text-white/70">
+            <p>&copy; 2024 TrueFans JAM. All rights reserved. Built for independent artists, by music lovers.</p>
           </div>
         </div>
       </footer>

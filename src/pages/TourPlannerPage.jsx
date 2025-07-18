@@ -124,6 +124,8 @@ const TourPlannerPage = () => {
             setTimeout(() => {
               setDemoProcessing(false)
               setCurrentStep(9)
+              // Scroll to top when processing completes
+              window.scrollTo({ top: 0, behavior: 'smooth' })
             }, 1500)
             return prev
           }
@@ -133,6 +135,11 @@ const TourPlannerPage = () => {
       return () => clearInterval(interval)
     }
   }, [demoProcessing, currentStep])
+
+  // Scroll to top when step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [currentStep])
 
   // Constants and data - these can be after hooks
   const demoData = {
@@ -230,6 +237,10 @@ nicole.concerts@email.com`,
     setIsDemo(true)
     setTourData(demoData)
     setCurrentStep(1)
+    // Scroll to top when demo starts
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, 100)
   }
 
   const stopDemo = () => {
@@ -267,6 +278,10 @@ nicole.concerts@email.com`,
       specialRequests: ''
     })
     setCurrentStep(1)
+    // Scroll to top when demo stops
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, 100)
   }
 
   const handleInputChange = (field, value) => {
@@ -303,11 +318,15 @@ nicole.concerts@email.com`,
         setProcessingStep(0)
       }
       setCurrentStep(currentStep + 1)
+      // Scroll to top handled by useEffect
     }
   }
 
   const prevStep = () => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1)
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1)
+      // Scroll to top handled by useEffect
+    }
   }
 
   const formatTime = (time24) => {
