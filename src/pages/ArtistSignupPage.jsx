@@ -19,113 +19,45 @@ import {
   Instagram,
   Youtube,
   Globe,
-  Mic,
-  Award,
-  TrendingUp,
-  Shield
+  Mic
 } from 'lucide-react'
 
 const ArtistSignupPage = () => {
-  const [currentStep, setCurrentStep] = useState(6) // Start at step 6 to show evaluation
-  const [demoProfile, setDemoProfile] = useState('excellent') // Demo profile selector
-  
-  // Demo profiles to showcase different evaluation outcomes
-  const demoProfiles = {
-    excellent: {
-      firstName: 'Sarah',
-      lastName: 'Mitchell',
-      email: 'sarah@sarahmitchellmusic.com',
-      phone: '(555) 123-4567',
-      city: 'Nashville',
-      state: 'TN',
-      artistName: 'Sarah Mitchell',
-      genre: 'Singer-Songwriter',
-      yearsPerforming: '10-plus',
-      performanceStyle: 'Solo Acoustic',
-      spotifyUrl: 'https://open.spotify.com/artist/sarahmitchell',
-      youtubeUrl: 'https://youtube.com/@sarahmitchellmusic',
-      instagramUrl: 'https://instagram.com/sarahmitchellmusic',
-      websiteUrl: 'https://sarahmitchellmusic.com',
-      previousVenues: 'The Bluebird Cafe, Eddie\'s Attic, House Concert Network venues across Southeast, Local coffee shops and bars',
-      audienceSize: '30-50',
-      equipment: ['acoustic-guitar', 'vocals', 'harmonica'],
-      availability: ['Friday Nights', 'Saturday Afternoons', 'Saturday Evenings', 'Sunday Afternoons'],
-      travelRadius: '100-miles',
-      bio: 'Sarah Mitchell is a Nashville-based singer-songwriter with over 10 years of experience performing intimate acoustic sets. Her heartfelt lyrics and warm stage presence have captivated audiences across the Southeast. She draws inspiration from folk legends like Joni Mitchell and contemporary artists like Brandi Carlile.',
-      specialRequests: 'Prefer venues with good natural acoustics'
-    },
-    good: {
-      firstName: 'Jake',
-      lastName: 'Rodriguez',
-      email: 'jake.music@gmail.com',
-      phone: '(555) 987-6543',
-      city: 'Austin',
-      state: 'TX',
-      artistName: 'Jake Rodriguez',
-      genre: 'Folk',
-      yearsPerforming: '5-10',
-      performanceStyle: 'Solo with Backing Tracks',
-      spotifyUrl: 'https://open.spotify.com/artist/jakerodriguez',
-      youtubeUrl: '',
-      instagramUrl: 'https://instagram.com/jakerodriguezmusic',
-      websiteUrl: '',
-      previousVenues: 'Local open mic nights, small venues around Austin',
-      audienceSize: '15-30',
-      equipment: ['acoustic-guitar', 'vocals'],
-      availability: ['Friday Nights', 'Saturday Evenings'],
-      travelRadius: '50-miles',
-      bio: 'Austin-based folk musician with a passion for storytelling through song.',
-      specialRequests: ''
-    },
-    fair: {
-      firstName: 'Emma',
-      lastName: 'Chen',
-      email: 'emma.chen.music@gmail.com',
-      phone: '(555) 456-7890',
-      city: 'Portland',
-      state: 'OR',
-      artistName: 'Emma Chen',
-      genre: 'Indie Rock',
-      yearsPerforming: '1-3',
-      performanceStyle: 'Solo Acoustic',
-      spotifyUrl: '',
-      youtubeUrl: '',
-      instagramUrl: 'https://instagram.com/emmachenmusic',
-      websiteUrl: '',
-      previousVenues: '',
-      audienceSize: '',
-      equipment: ['acoustic-guitar'],
-      availability: ['Saturday Evenings'],
-      travelRadius: '25-miles',
-      bio: 'Emerging artist exploring indie rock sounds.',
-      specialRequests: ''
-    },
-    needsImprovement: {
-      firstName: 'Alex',
-      lastName: 'Thompson',
-      email: 'alex.t@email.com',
-      phone: '(555) 321-0987',
-      city: 'Denver',
-      state: 'CO',
-      artistName: 'Alex T',
-      genre: 'Alternative',
-      yearsPerforming: 'less-than-1',
-      performanceStyle: 'Solo Acoustic',
-      spotifyUrl: '',
-      youtubeUrl: '',
-      instagramUrl: '',
-      websiteUrl: '',
-      previousVenues: '',
-      audienceSize: '',
-      equipment: ['vocals'],
-      availability: ['Saturday Evenings'],
-      travelRadius: '10-miles',
-      bio: '',
-      specialRequests: ''
-    }
-  }
-
-  const [formData, setFormData] = useState(demoProfiles[demoProfile])
+  const [currentStep, setCurrentStep] = useState(1)
+  const [formData, setFormData] = useState({
+    // Personal Info
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    city: '',
+    state: '',
+    
+    // Artist Info
+    artistName: '',
+    genre: '',
+    yearsPerforming: '',
+    performanceStyle: '',
+    
+    // Music & Media
+    spotifyUrl: '',
+    youtubeUrl: '',
+    instagramUrl: '',
+    websiteUrl: '',
+    
+    // Experience
+    previousVenues: '',
+    audienceSize: '',
+    equipment: [],
+    
+    // Availability
+    availability: [],
+    travelRadius: '',
+    
+    // Additional
+    bio: '',
+    specialRequests: ''
+  })
 
   const steps = [
     { id: 1, title: 'Personal Info', icon: User },
@@ -166,8 +98,8 @@ const ArtistSignupPage = () => {
   const benefits = [
     {
       icon: DollarSign,
-      title: 'Earn $640 Average Per Show',
-      description: '80% of donations go directly to you'
+      title: 'Earn $560 Average Per Show',
+      description: '70% of donations go directly to you'
     },
     {
       icon: Users,
@@ -200,70 +132,6 @@ const ArtistSignupPage = () => {
 
   const prevStep = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1)
-  }
-
-  const switchDemoProfile = (profileType) => {
-    setDemoProfile(profileType)
-    setFormData(demoProfiles[profileType])
-  }
-
-  // Artist evaluation logic
-  const calculateArtistScore = () => {
-    let score = 0
-    let maxScore = 0
-
-    // Experience scoring (30 points max)
-    maxScore += 30
-    if (formData.yearsPerforming === '10-plus') score += 30
-    else if (formData.yearsPerforming === '5-10') score += 25
-    else if (formData.yearsPerforming === '3-5') score += 20
-    else if (formData.yearsPerforming === '1-3') score += 15
-    else if (formData.yearsPerforming === 'less-than-1') score += 10
-
-    // Online presence scoring (25 points max)
-    maxScore += 25
-    if (formData.spotifyUrl) score += 8
-    if (formData.youtubeUrl) score += 8
-    if (formData.instagramUrl) score += 5
-    if (formData.websiteUrl) score += 4
-
-    // Performance readiness (20 points max)
-    maxScore += 20
-    if (formData.equipment.length >= 2) score += 10
-    if (formData.previousVenues) score += 10
-
-    // Availability & reach (15 points max)
-    maxScore += 15
-    if (formData.availability.length >= 3) score += 8
-    if (formData.travelRadius && formData.travelRadius !== '10-miles') score += 7
-
-    // Profile completeness (10 points max)
-    maxScore += 10
-    if (formData.bio && formData.bio.length > 50) score += 5
-    if (formData.audienceSize) score += 5
-
-    return Math.round((score / maxScore) * 100)
-  }
-
-  const getScoreColor = (score) => {
-    if (score >= 85) return 'text-green-600'
-    if (score >= 70) return 'text-blue-600'
-    if (score >= 55) return 'text-yellow-600'
-    return 'text-red-600'
-  }
-
-  const getScoreBgColor = (score) => {
-    if (score >= 85) return 'bg-green-50 border-green-200'
-    if (score >= 70) return 'bg-blue-50 border-blue-200'
-    if (score >= 55) return 'bg-yellow-50 border-yellow-200'
-    return 'bg-red-50 border-red-200'
-  }
-
-  const getScoreStatus = (score) => {
-    if (score >= 85) return { status: 'Excellent', message: 'Your profile shows strong potential for success!' }
-    if (score >= 70) return { status: 'Good', message: 'You have a solid foundation for house concerts.' }
-    if (score >= 55) return { status: 'Fair', message: 'Consider strengthening your online presence.' }
-    return { status: 'Needs Improvement', message: 'We recommend building more experience first.' }
   }
 
   const renderStepContent = () => {
@@ -612,60 +480,8 @@ const ArtistSignupPage = () => {
         )
 
       case 6:
-        const artistScore = calculateArtistScore()
-        const scoreStatus = getScoreStatus(artistScore)
-        
         return (
           <div className="space-y-6">
-            {/* Demo Profile Selector */}
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 mb-6">
-              <h3 className="text-lg font-bold text-purple-900 mb-4">🎯 Demo: Try Different Artist Profiles</h3>
-              <p className="text-purple-800 mb-4">See how the evaluation system works with different artist backgrounds:</p>
-              <div className="grid md:grid-cols-4 gap-3">
-                <button
-                  onClick={() => switchDemoProfile('excellent')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    demoProfile === 'excellent' 
-                      ? 'bg-green-600 text-white' 
-                      : 'bg-white text-green-600 border border-green-600 hover:bg-green-50'
-                  }`}
-                >
-                  Excellent (90%+)
-                </button>
-                <button
-                  onClick={() => switchDemoProfile('good')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    demoProfile === 'good' 
-                      ? 'bg-blue-600 text-white' 
-                      : 'bg-white text-blue-600 border border-blue-600 hover:bg-blue-50'
-                  }`}
-                >
-                  Good (70-84%)
-                </button>
-                <button
-                  onClick={() => switchDemoProfile('fair')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    demoProfile === 'fair' 
-                      ? 'bg-yellow-600 text-white' 
-                      : 'bg-white text-yellow-600 border border-yellow-600 hover:bg-yellow-50'
-                  }`}
-                >
-                  Fair (55-69%)
-                </button>
-                <button
-                  onClick={() => switchDemoProfile('needsImprovement')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    demoProfile === 'needsImprovement' 
-                      ? 'bg-red-600 text-white' 
-                      : 'bg-white text-red-600 border border-red-600 hover:bg-red-50'
-                  }`}
-                >
-                  Needs Work (Below 55%)
-                </button>
-              </div>
-            </div>
-
-            {/* Application Summary */}
             <div className="bg-gray-50 rounded-lg p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Application Summary</h3>
               <div className="grid md:grid-cols-2 gap-6">
@@ -684,161 +500,32 @@ const ArtistSignupPage = () => {
               </div>
             </div>
 
-            {/* Artist Evaluation */}
-            <div className={`rounded-lg border-2 p-6 ${getScoreBgColor(artistScore)}`}>
-              <div className="flex items-center mb-4">
-                <Award className="w-6 h-6 text-purple-600 mr-3" />
-                <h3 className="text-lg font-bold text-gray-900">Artist Readiness Evaluation</h3>
-              </div>
-              
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <div className="flex items-center mb-2">
-                    <span className={`text-3xl font-bold mr-3 ${getScoreColor(artistScore)}`}>{artistScore}%</span>
-                    <span className={`text-lg font-semibold ${getScoreColor(artistScore)}`}>{scoreStatus.status}</span>
-                  </div>
-                  <p className="text-gray-700">{scoreStatus.message}</p>
-                </div>
-                <div className={`w-20 h-20 rounded-full border-8 border-current flex items-center justify-center ${getScoreColor(artistScore)}`}>
-                  <TrendingUp className="w-8 h-8" />
-                </div>
-              </div>
-
-              {/* Evaluation Breakdown */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h4 className="font-bold text-gray-900 mb-3">Strengths</h4>
-                  {formData.yearsPerforming && (
-                    <div className="flex items-center text-green-700">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      <span>Performance experience: {formData.yearsPerforming.replace('-', ' to ')} years</span>
-                    </div>
-                  )}
-                  {formData.spotifyUrl && (
-                    <div className="flex items-center text-green-700">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      <span>Active Spotify presence</span>
-                    </div>
-                  )}
-                  {formData.youtubeUrl && (
-                    <div className="flex items-center text-green-700">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      <span>YouTube channel established</span>
-                    </div>
-                  )}
-                  {formData.websiteUrl && (
-                    <div className="flex items-center text-green-700">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      <span>Professional website</span>
-                    </div>
-                  )}
-                  {formData.equipment.length >= 2 && (
-                    <div className="flex items-center text-green-700">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      <span>Well-equipped for performances</span>
-                    </div>
-                  )}
-                  {formData.previousVenues && (
-                    <div className="flex items-center text-green-700">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      <span>Proven venue experience</span>
-                    </div>
-                  )}
-                  {formData.availability.length >= 3 && (
-                    <div className="flex items-center text-green-700">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      <span>Flexible availability</span>
-                    </div>
-                  )}
-                  {formData.bio && formData.bio.length > 50 && (
-                    <div className="flex items-center text-green-700">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      <span>Detailed artist bio</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-4">
-                  <h4 className="font-bold text-gray-900 mb-3">Growth Areas</h4>
-                  {!formData.youtubeUrl && (
-                    <div className="flex items-center text-yellow-700">
-                      <Star className="w-4 h-4 mr-2" />
-                      <span>Consider adding YouTube content</span>
-                    </div>
-                  )}
-                  {!formData.websiteUrl && (
-                    <div className="flex items-center text-yellow-700">
-                      <Star className="w-4 h-4 mr-2" />
-                      <span>Professional website recommended</span>
-                    </div>
-                  )}
-                  {!formData.spotifyUrl && (
-                    <div className="flex items-center text-yellow-700">
-                      <Star className="w-4 h-4 mr-2" />
-                      <span>Spotify presence would help</span>
-                    </div>
-                  )}
-                  {(!formData.bio || formData.bio.length < 50) && (
-                    <div className="flex items-center text-yellow-700">
-                      <Star className="w-4 h-4 mr-2" />
-                      <span>Expand your artist bio</span>
-                    </div>
-                  )}
-                  {!formData.previousVenues && (
-                    <div className="flex items-center text-yellow-700">
-                      <Star className="w-4 h-4 mr-2" />
-                      <span>Add performance venue history</span>
-                    </div>
-                  )}
-                  {formData.equipment.length < 2 && (
-                    <div className="flex items-center text-yellow-700">
-                      <Star className="w-4 h-4 mr-2" />
-                      <span>Consider expanding your equipment</span>
-                    </div>
-                  )}
-                  {formData.availability.length < 3 && (
-                    <div className="flex items-center text-yellow-700">
-                      <Star className="w-4 h-4 mr-2" />
-                      <span>More availability options preferred</span>
-                    </div>
-                  )}
-                  {!formData.audienceSize && (
-                    <div className="flex items-center text-yellow-700">
-                      <Star className="w-4 h-4 mr-2" />
-                      <span>Add typical audience size info</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Next Steps */}
             <div className="bg-green-50 border border-green-200 rounded-lg p-6">
               <div className="flex items-center mb-4">
-                <Shield className="w-6 h-6 text-green-600 mr-3" />
+                <CheckCircle className="w-6 h-6 text-green-600 mr-3" />
                 <h3 className="text-lg font-bold text-green-900">Ready to Submit</h3>
               </div>
               <p className="text-green-800 mb-4">
-                Based on your evaluation, our team will review your application within 2-3 business days.
+                Your application looks great! Once submitted, our team will review it within 2-3 business days.
               </p>
               <div className="bg-white rounded-lg p-4 mb-4">
                 <h4 className="font-bold text-gray-900 mb-2">What happens next?</h4>
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-center">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Automated evaluation complete
+                    Application review (2-3 business days)
                   </li>
                   <li className="flex items-center">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Music sample review (2-3 business days)
+                    Music sample evaluation
                   </li>
                   <li className="flex items-center">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    Profile activation and onboarding
+                    Video interview (if approved)
                   </li>
                   <li className="flex items-center">
                     <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-                    First booking opportunities!
+                    Profile activation and first bookings!
                   </li>
                 </ul>
               </div>

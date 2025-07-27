@@ -7,8 +7,8 @@ const RevenueCalculatorPage = () => {
     showsPerMonth: 4,
     averageTicketPrice: 25,
     averageAttendance: 20,
-    tier1Referrals: 0, // Direct referrals (artists + hosts)
-    tier2Referrals: 0  // Second-tier referrals (referrals made by your referrals)
+    hostReferrals: 0,
+    artistReferrals: 0
   })
 
   const [results, setResults] = useState({
@@ -16,9 +16,7 @@ const RevenueCalculatorPage = () => {
     artistEarnings: 0,
     hostEarnings: 0,
     platformFee: 0,
-    tier1ReferralEarnings: 0,
-    tier2ReferralEarnings: 0,
-    totalReferralEarnings: 0,
+    referralEarnings: 0,
     totalEarnings: 0,
     yearlyProjection: 0
   })
@@ -26,15 +24,15 @@ const RevenueCalculatorPage = () => {
   const calculateRevenue = () => {
     const grossRevenue = inputs.showsPerMonth * inputs.averageTicketPrice * inputs.averageAttendance
     
-    // Revenue split: 80% artist, 10% host, 5% referral program (2-tier), 5% TrueFans CONNECT™
-    const artistEarnings = grossRevenue * 0.80
+    // Revenue split: 70% artist, 10% host, 20% platform
+    const artistEarnings = grossRevenue * 0.70
     const hostEarnings = grossRevenue * 0.10
-    const platformFee = grossRevenue * 0.05
+    const platformFee = grossRevenue * 0.20
     
-    // 2-Tier Referral System: 2.5% per tier
-    const tier1ReferralEarnings = inputs.tier1Referrals * (grossRevenue * 0.025)
-    const tier2ReferralEarnings = inputs.tier2Referrals * (grossRevenue * 0.025)
-    const totalReferralEarnings = tier1ReferralEarnings + tier2ReferralEarnings
+    // Referral earnings: 2.5% of referred revenue
+    const hostReferralEarnings = inputs.hostReferrals * grossRevenue * 0.025
+    const artistReferralEarnings = inputs.artistReferrals * grossRevenue * 0.025
+    const totalReferralEarnings = hostReferralEarnings + artistReferralEarnings
     
     const totalEarnings = artistEarnings + totalReferralEarnings
     const yearlyProjection = totalEarnings * 12
@@ -44,9 +42,7 @@ const RevenueCalculatorPage = () => {
       artistEarnings,
       hostEarnings,
       platformFee,
-      tier1ReferralEarnings,
-      tier2ReferralEarnings,
-      totalReferralEarnings,
+      referralEarnings: totalReferralEarnings,
       totalEarnings,
       yearlyProjection
     })
@@ -76,22 +72,22 @@ const RevenueCalculatorPage = () => {
     {
       title: "Getting Started",
       description: "New artist building their fanbase",
-      values: { showsPerMonth: 2, averageTicketPrice: 20, averageAttendance: 15, tier1Referrals: 0, tier2Referrals: 0 }
+      values: { showsPerMonth: 2, averageTicketPrice: 20, averageAttendance: 15, hostReferrals: 0, artistReferrals: 0 }
     },
     {
       title: "Growing Artist",
       description: "Established local following",
-      values: { showsPerMonth: 4, averageTicketPrice: 25, averageAttendance: 25, tier1Referrals: 1, tier2Referrals: 0 }
+      values: { showsPerMonth: 4, averageTicketPrice: 25, averageAttendance: 25, hostReferrals: 1, artistReferrals: 0 }
     },
     {
       title: "Thriving Performer",
       description: "Popular artist with strong network",
-      values: { showsPerMonth: 6, averageTicketPrice: 30, averageAttendance: 30, tier1Referrals: 2, tier2Referrals: 1 }
+      values: { showsPerMonth: 6, averageTicketPrice: 30, averageAttendance: 30, hostReferrals: 2, artistReferrals: 1 }
     },
     {
       title: "Top Tier Artist",
       description: "Established artist with referral network",
-      values: { showsPerMonth: 8, averageTicketPrice: 35, averageAttendance: 35, tier1Referrals: 3, tier2Referrals: 2 }
+      values: { showsPerMonth: 8, averageTicketPrice: 35, averageAttendance: 35, hostReferrals: 3, artistReferrals: 2 }
     }
   ]
 
@@ -99,7 +95,7 @@ const RevenueCalculatorPage = () => {
     {
       label: "Artist Earnings",
       amount: results.artistEarnings,
-      percentage: 80,
+      percentage: 70,
       color: "from-purple-600 to-purple-700",
       icon: Music,
       description: "Your direct performance earnings"
@@ -113,17 +109,9 @@ const RevenueCalculatorPage = () => {
       description: "Venue host compensation"
     },
     {
-      label: "2-Tier Referrals",
-      amount: results.totalReferralEarnings,
-      percentage: 5,
-      color: "from-green-600 to-green-700",
-      icon: Users,
-      description: "Multi-level referral commissions"
-    },
-    {
-      label: "TrueFans CONNECT™",
+      label: "Platform Fee",
       amount: results.platformFee,
-      percentage: 5,
+      percentage: 20,
       color: "from-gray-600 to-gray-700",
       icon: Award,
       description: "Platform operations & support"
@@ -147,7 +135,7 @@ const RevenueCalculatorPage = () => {
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-6">Revenue Calculator</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Discover your earning potential on TrueFans JAM. Calculate projected income based on your performance schedule and 2-tier referral network.
+            Discover your earning potential on TrueFans JAM. Calculate projected income based on your performance schedule and audience size.
           </p>
         </div>
 
@@ -220,44 +208,35 @@ const RevenueCalculatorPage = () => {
               </div>
 
               <div className="border-t pt-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">2-Tier Referral Network</h3>
-                
-                <div className="bg-green-50 rounded-lg p-4 mb-4">
-                  <h4 className="font-bold text-green-900 mb-2">How 2-Tier Referrals Work</h4>
-                  <div className="text-sm text-green-800 space-y-2">
-                    <p><strong>Tier 1 (2.5%):</strong> You earn 2.5% from artists/hosts you directly refer</p>
-                    <p><strong>Tier 2 (2.5%):</strong> You earn 2.5% from artists/hosts referred by your referrals</p>
-                    <p><strong>Example:</strong> You refer Artist A → Artist A refers Artist B → You earn from both!</p>
-                  </div>
-                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Referral Network (Optional)</h3>
                 
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Tier 1 Referrals (Direct)
+                      Host Referrals
                     </label>
                     <input
                       type="number"
                       min="0"
-                      value={inputs.tier1Referrals}
-                      onChange={(e) => handleInputChange('tier1Referrals', e.target.value)}
+                      value={inputs.hostReferrals}
+                      onChange={(e) => handleInputChange('hostReferrals', e.target.value)}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Artists & hosts you directly referred (2.5% each)</p>
+                    <p className="text-xs text-gray-500 mt-1">Hosts you've referred (earn 2.5% of their revenue)</p>
                   </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Tier 2 Referrals (Indirect)
+                      Artist Referrals
                     </label>
                     <input
                       type="number"
                       min="0"
-                      value={inputs.tier2Referrals}
-                      onChange={(e) => handleInputChange('tier2Referrals', e.target.value)}
+                      value={inputs.artistReferrals}
+                      onChange={(e) => handleInputChange('artistReferrals', e.target.value)}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
-                    <p className="text-xs text-gray-500 mt-1">Artists & hosts referred by your referrals (2.5% each)</p>
+                    <p className="text-xs text-gray-500 mt-1">Artists you've referred (earn 2.5% of their revenue)</p>
                   </div>
                 </div>
               </div>
@@ -272,21 +251,14 @@ const RevenueCalculatorPage = () => {
               
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-purple-200">Performance Earnings (80%):</span>
+                  <span className="text-purple-200">Performance Earnings:</span>
                   <span className="text-2xl font-bold">{formatCurrency(results.artistEarnings)}</span>
                 </div>
                 
-                {results.tier1ReferralEarnings > 0 && (
+                {results.referralEarnings > 0 && (
                   <div className="flex justify-between items-center">
-                    <span className="text-purple-200">Tier 1 Referrals (2.5% each):</span>
-                    <span className="text-2xl font-bold">{formatCurrency(results.tier1ReferralEarnings)}</span>
-                  </div>
-                )}
-                
-                {results.tier2ReferralEarnings > 0 && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-purple-200">Tier 2 Referrals (2.5% each):</span>
-                    <span className="text-2xl font-bold">{formatCurrency(results.tier2ReferralEarnings)}</span>
+                    <span className="text-purple-200">Referral Earnings:</span>
+                    <span className="text-2xl font-bold">{formatCurrency(results.referralEarnings)}</span>
                   </div>
                 )}
                 
@@ -330,31 +302,6 @@ const RevenueCalculatorPage = () => {
                 ))}
               </div>
               
-              {/* 2-Tier Referral Breakdown */}
-              {(results.tier1ReferralEarnings > 0 || results.tier2ReferralEarnings > 0) && (
-                <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
-                  <h4 className="font-bold text-green-900 mb-3">2-Tier Referral Breakdown</h4>
-                  <div className="space-y-2">
-                    {results.tier1ReferralEarnings > 0 && (
-                      <div className="flex justify-between items-center">
-                        <span className="text-green-800">Tier 1 ({inputs.tier1Referrals} referrals × 2.5%):</span>
-                        <span className="font-bold text-green-900">{formatCurrency(results.tier1ReferralEarnings)}</span>
-                      </div>
-                    )}
-                    {results.tier2ReferralEarnings > 0 && (
-                      <div className="flex justify-between items-center">
-                        <span className="text-green-800">Tier 2 ({inputs.tier2Referrals} referrals × 2.5%):</span>
-                        <span className="font-bold text-green-900">{formatCurrency(results.tier2ReferralEarnings)}</span>
-                      </div>
-                    )}
-                    <div className="border-t border-green-300 pt-2 flex justify-between items-center font-bold">
-                      <span className="text-green-900">Total Referral Income:</span>
-                      <span className="text-green-900">{formatCurrency(results.totalReferralEarnings)}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
               <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <div className="flex items-start">
                   <Info className="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
@@ -362,79 +309,7 @@ const RevenueCalculatorPage = () => {
                     <strong>Monthly Gross Revenue:</strong> {formatCurrency(results.monthlyRevenue)}
                     <br />
                     Based on {inputs.showsPerMonth} shows × {inputs.averageAttendance} attendees × ${inputs.averageTicketPrice} tickets
-                    <br />
-                    <strong>New Revenue Split:</strong> Artist 80% • Host 10% • 2-Tier Referrals 5% • TrueFans CONNECT™ 5%
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 2-Tier Referral Explanation */}
-        <div className="mt-16 bg-gradient-to-br from-green-50 to-blue-50 rounded-2xl p-8 border border-green-200">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">2-Tier Referral System Explained</h2>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Tier 1 - Direct Referrals</h3>
-              <p className="text-gray-600 mb-4">
-                Earn <strong>2.5%</strong> from every artist or host you directly refer to the platform.
-              </p>
-              <div className="bg-white rounded-lg p-4 shadow-sm">
-                <div className="text-sm text-gray-600">Example:</div>
-                <div className="font-bold text-green-600">You → Artist A</div>
-                <div className="text-sm text-gray-500">You earn 2.5% of Artist A's donations</div>
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Tier 2 - Indirect Referrals</h3>
-              <p className="text-gray-600 mb-4">
-                Earn <strong>2.5%</strong> from artists or hosts referred by your direct referrals.
-              </p>
-              <div className="bg-white rounded-lg p-4 shadow-sm">
-                <div className="text-sm text-gray-600">Example:</div>
-                <div className="font-bold text-blue-600">You → Artist A → Artist B</div>
-                <div className="text-sm text-gray-500">You earn 2.5% of Artist B's donations too!</div>
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <DollarSign className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Compound Earnings</h3>
-              <p className="text-gray-600 mb-4">
-                Build a network that earns you <strong>passive income</strong> from multiple tiers.
-              </p>
-              <div className="bg-white rounded-lg p-4 shadow-sm">
-                <div className="text-sm text-gray-600">Total Potential:</div>
-                <div className="font-bold text-purple-600">Up to 5% per referral chain</div>
-                <div className="text-sm text-gray-500">2.5% Tier 1 + 2.5% Tier 2</div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="mt-8 text-center">
-            <div className="bg-white rounded-xl p-6 shadow-lg inline-block">
-              <h4 className="text-lg font-bold text-gray-900 mb-2">Applies to Both:</h4>
-              <div className="flex items-center justify-center space-x-8">
-                <div className="text-center">
-                  <Music className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                  <div className="font-semibold text-gray-900">Artist Referrals</div>
-                  <div className="text-sm text-gray-600">2.5% per tier</div>
-                </div>
-                <div className="text-center">
-                  <Home className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <div className="font-semibold text-gray-900">Venue Referrals</div>
-                  <div className="text-sm text-gray-600">2.5% per tier</div>
                 </div>
               </div>
             </div>
@@ -447,9 +322,9 @@ const RevenueCalculatorPage = () => {
             <div className="w-12 h-12 bg-gradient-to-r from-green-600 to-green-700 rounded-full flex items-center justify-center mb-4">
               <TrendingUp className="w-6 h-6 text-white" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-3">Network Growth</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-3">Growth Potential</h3>
             <p className="text-gray-600 text-sm">
-              Build a sustainable referral network that grows exponentially. Each referral can bring more referrals, multiplying your earnings.
+              Most artists see 20-40% growth in earnings within their first 6 months as they build their fanbase and referral network.
             </p>
           </div>
 
@@ -457,9 +332,9 @@ const RevenueCalculatorPage = () => {
             <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center mb-4">
               <Users className="w-6 h-6 text-white" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-3">Dual Referral System</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-3">Referral Benefits</h3>
             <p className="text-gray-600 text-sm">
-              Earn from both artist and venue referrals. Each type of referral contributes to your 2-tier earning potential.
+              Build passive income by referring hosts and artists. Earn 2.5% of their revenue for life with no limits on referrals.
             </p>
           </div>
 
@@ -469,7 +344,7 @@ const RevenueCalculatorPage = () => {
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-3">Fair Revenue Split</h3>
             <p className="text-gray-600 text-sm">
-              Artists keep 80% of donations - the highest in the industry. 2-tier referrals reward network builders fairly.
+              Artists keep 70% of ticket sales - the highest percentage in the industry. No hidden fees or surprise deductions.
             </p>
           </div>
         </div>
@@ -477,9 +352,9 @@ const RevenueCalculatorPage = () => {
         {/* CTA Section */}
         <div className="mt-16 text-center">
           <div className="bg-gradient-to-br from-purple-900 to-pink-900 rounded-2xl p-12 text-white">
-            <h2 className="text-3xl font-bold mb-6">Ready to Build Your Network?</h2>
+            <h2 className="text-3xl font-bold mb-6">Ready to Start Earning?</h2>
             <p className="text-xl text-purple-200 mb-8 max-w-3xl mx-auto">
-              Join TrueFans JAM today and start building sustainable income through performances and 2-tier referrals. No upfront costs, no monthly fees.
+              Join TrueFans JAM today and start building sustainable income from your music. No upfront costs, no monthly fees.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-white text-purple-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors">

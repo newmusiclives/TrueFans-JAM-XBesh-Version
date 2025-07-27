@@ -2,65 +2,130 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
-@layer base {
-  * {
-    @apply border-gray-200;
-  }
-  body {
-    @apply bg-white text-gray-900;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
+/* Custom styles */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@layer components {
-  .gradient-bg {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  }
-  
-  .glass-effect {
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-  
-  .btn-primary {
-    @apply bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
-  }
-  
-  .btn-secondary {
-    @apply bg-white/20 hover:bg-white/30 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 border border-white/30 hover:border-white/50 backdrop-blur-sm;
-  }
-  
-  .card-hover {
-    @apply transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl;
-  }
-  
-  .text-gradient {
-    @apply bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent;
-  }
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
-.scroll-smooth {
+/* Smooth scrolling */
+html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
 }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 4px;
+/* Brand Color System - Exact RGB Values */
+.gradient-bg {
+  background: linear-gradient(to bottom right, rgb(42,12,76), rgb(23,24,73));
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+.gradient-bg-reverse {
+  background: linear-gradient(to top left, rgb(42,12,76), rgb(23,24,73));
+}
+
+.gradient-bg-horizontal {
+  background: linear-gradient(to right, rgb(42,12,76), rgb(23,24,73));
+}
+
+/* Custom button styles with exact brand colors */
+.btn-primary {
+  background: linear-gradient(to right, rgb(42,12,76), rgb(23,24,73));
+  @apply text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300;
+}
+
+.btn-secondary {
+  border: 2px solid rgb(42,12,76);
+  color: rgb(42,12,76);
+  @apply px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-50 transition-all duration-300;
+}
+
+/* Brand color utilities */
+.text-brand-primary {
+  color: rgb(42,12,76);
+}
+
+.text-brand-secondary {
+  color: rgb(23,24,73);
+}
+
+.bg-brand-primary {
+  background-color: rgb(42,12,76);
+}
+
+.bg-brand-secondary {
+  background-color: rgb(23,24,73);
+}
+
+.border-brand-primary {
+  border-color: rgb(42,12,76);
+}
+
+.border-brand-secondary {
+  border-color: rgb(23,24,73);
+}
+
+/* Orange accent color for highlights */
+.text-accent-orange {
+  color: #f97316;
+}
+
+.bg-accent-orange {
+  background-color: #f97316;
+}
+
+.border-accent-orange {
+  border-color: #f97316;
+}
+
+/* Hover states with brand colors */
+.hover-brand-primary:hover {
+  color: rgb(42,12,76);
+}
+
+.hover-brand-secondary:hover {
+  color: rgb(23,24,73);
+}
+
+/* Custom focus states */
+.focus-brand:focus {
+  outline: 2px solid rgb(42,12,76);
+  outline-offset: 2px;
+}
+
+/* Progress bars and loading states */
+.progress-brand {
+  background: linear-gradient(to right, rgb(42,12,76), rgb(23,24,73));
+}
+
+/* Custom shadows with brand colors */
+.shadow-brand {
+  box-shadow: 0 10px 25px -5px rgba(42, 12, 76, 0.1), 0 4px 6px -2px rgba(42, 12, 76, 0.05);
+}
+
+.shadow-brand-lg {
+  box-shadow: 0 20px 25px -5px rgba(42, 12, 76, 0.1), 0 10px 10px -5px rgba(42, 12, 76, 0.04);
 }
